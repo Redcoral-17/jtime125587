@@ -16,5 +16,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- List of mapped classes -->
+        <mapping class="it.unicam.cs.mpgc.jtime125587.model.Project"/>
+        <mapping class="it.unicam.cs.mpgc.jtime125587.model.Report"/>
+        <mapping class="it.unicam.cs.mpgc.jtime125587.model.Task"/>
     </session-factory>
 </hibernate-configuration>

@@ -6,6 +6,7 @@ import lombok.NonNull;
 import org.hibernate.Session;
 
 import java.time.Duration;
+import java.time.LocalTime;
 
 public class TaskController implements Controller<Task> {
     @Getter
@@ -23,6 +24,10 @@ public class TaskController implements Controller<Task> {
 
     private Duration leftTime(@NonNull Duration hpTime, @NonNull Duration effTime) {
         return hpTime.minus(effTime);
+    }
+
+    private LocalTime end(@NonNull LocalTime start, @NonNull Duration time) {
+        return start.plusMinutes(time.toMinutes());
     }
 }
 

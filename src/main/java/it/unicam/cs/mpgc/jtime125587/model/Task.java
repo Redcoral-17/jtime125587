@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -18,6 +19,7 @@ public class Task {
     private String project;
     private String tag;
     private LocalDate date;
+    private LocalTime start;
     private Duration hpTime;
     private Duration effTime;
 }

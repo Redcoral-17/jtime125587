@@ -17,7 +17,6 @@ public class Task {
     private Long id;
     private String name;
     private String project;
-    private String tag;
     private LocalDate date;
     private LocalTime start;
     private Duration hpTime;

@@ -27,7 +27,6 @@
          <children>
             <TextField maxWidth="-Infinity" prefWidth="135.0" promptText="Name" />
             <ComboBox maxWidth="-Infinity" prefWidth="135.0" promptText="Project" GridPane.columnIndex="1" />
-            <TextField maxWidth="-Infinity" prefWidth="135.0" promptText="Tag" GridPane.rowIndex="1" />
             <DatePicker maxWidth="-Infinity" prefWidth="135.0" promptText="Date" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox maxWidth="-Infinity" prefWidth="135.0" promptText="Start" GridPane.rowIndex="2" />
             <ComboBox maxWidth="-Infinity" prefWidth="135.0" promptText="Duration" GridPane.columnIndex="1" GridPane.rowIndex="2" />

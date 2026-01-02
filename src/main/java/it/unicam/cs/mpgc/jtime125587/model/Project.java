@@ -14,6 +14,6 @@ public class Project {
     @Id
     private Long id;
     private String name;
-    private String tag;
+    private Status status;
     private List<Task> tasks;
 }

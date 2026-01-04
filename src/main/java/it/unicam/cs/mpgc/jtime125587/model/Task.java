@@ -21,4 +21,5 @@ public class Task {
     private LocalTime start;
     private Duration hpTime;
     private Duration effTime;
+    private Status status;
 }

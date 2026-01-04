@@ -14,8 +14,8 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(loader.load());
         stage.setTitle("JTime v1.0");
         stage.setScene(scene);
-        stage.setMinWidth(914);
-        stage.setMinHeight(617);
+        stage.setMinWidth(514);
+        stage.setMinHeight(717);
         stage.show();
     }
 

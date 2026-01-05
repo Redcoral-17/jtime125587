@@ -14,11 +14,11 @@ public class TaskController {
     private static final TaskController instance = new TaskController();
 
     public void add(@NonNull Task task) {
-        HibernateUtil.runInTransaction((Consumer<Session>) session -> session.persist(task));
+        HibernateUtil.runInTx((Consumer<Session>) session -> session.persist(task));
     }
 
     public void delete(@NonNull Task task) {
-        HibernateUtil.runInTransaction((Consumer<Session>) session -> session.remove(task));
+        HibernateUtil.runInTx((Consumer<Session>) session -> session.remove(task));
     }
 
     public static Duration timeOf(@NonNull Task task) {

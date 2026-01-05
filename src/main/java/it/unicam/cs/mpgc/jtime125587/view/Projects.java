@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 
-public class Projects extends Dialog {
+public class Projects {
     @FXML
     private TableView<Project> projectList;
     @FXML
@@ -35,6 +35,6 @@ public class Projects extends Dialog {
 
     @FXML
     private void openAddProject() throws IOException {
-        openDialog("/it/unicam/cs/mpgc/jtime125587/AddProject.fxml", "Add Project");
+        Main.openDialog("/it/unicam/cs/mpgc/jtime125587/AddProject.fxml", "Add Project");
     }
 }

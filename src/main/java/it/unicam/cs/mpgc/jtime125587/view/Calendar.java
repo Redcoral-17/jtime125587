@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.jtime125587.view;
 
+import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.fxml.FXML;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Calendar extends Dialog {
+public class Calendar {
     @FXML
     private DatePicker date;
     @FXML
@@ -37,6 +38,12 @@ public class Calendar extends Dialog {
 
     @FXML
     private void openAddTask() throws IOException {
-        openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task");
+        Main.openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task");
+    }
+
+    @FXML
+    private void deleteTask() {
+        Task task = taskList.getSelectionModel().getSelectedItem();
+        TaskController.getInstance().delete(task);
     }
 }

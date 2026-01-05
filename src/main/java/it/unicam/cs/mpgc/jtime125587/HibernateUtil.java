@@ -23,7 +23,7 @@ public class HibernateUtil {
         }
     }
 
-    public static <T> T runInTransaction(Function<Session, T> action) {
+    public static <T> T runInTx(Function<Session, T> action) {
         Objects.requireNonNull(action, "action must not be null");
         Transaction tx = null;
         try (Session session = getSessionFactory().openSession()) {
@@ -39,16 +39,10 @@ public class HibernateUtil {
         }
     }
 
-    public static void runInTransaction(Consumer<Session> action) {
-        runInTransaction(session -> {
+    public static void runInTx(Consumer<Session> action) {
+        runInTx(session -> {
             action.accept(session);
             return null;
         });
-    }
-
-    public static void shutdown() {
-        if (sessionFactory != null && !sessionFactory.isClosed()) {
-            sessionFactory.close();
-        }
     }
 }

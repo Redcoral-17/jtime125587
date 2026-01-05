@@ -13,10 +13,10 @@ public class ReportController {
     private static final ReportController instance = new ReportController();
 
     public void add(@NonNull Report report) {
-        HibernateUtil.runInTransaction((Consumer<Session>) session -> session.persist(report));
+        HibernateUtil.runInTx((Consumer<Session>) session -> session.persist(report));
     }
 
     public void delete(@NonNull Report report) {
-        HibernateUtil.runInTransaction((Consumer<Session>) session -> session.remove(report));
+        HibernateUtil.runInTx((Consumer<Session>) session -> session.remove(report));
     }
 }

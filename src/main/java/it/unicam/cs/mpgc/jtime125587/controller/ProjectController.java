@@ -1,10 +1,11 @@
 package it.unicam.cs.mpgc.jtime125587.controller;
 
+import it.unicam.cs.mpgc.jtime125587.HibernateUtil;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import lombok.Getter;
 import lombok.NonNull;
-import org.hibernate.Session;
+
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -14,13 +15,13 @@ public class ProjectController implements Controller<Project> {
     private static final ProjectController instance = new ProjectController();
 
     @Override
-    public void add(@NonNull Session session, @NonNull Project project) {
-        session.persist(project);
+    public void add(@NonNull Project project) {
+        HibernateUtil.runInTransaction(session -> session.persist(project));
     }
 
     @Override
-    public void delete(@NonNull Session session, @NonNull Project project) {
-        session.remove(project);
+    public void delete(@NonNull Project project) {
+        HibernateUtil.runInTransaction(session -> session.remove(project));
     }
 
     private LocalDate dateOf(@NonNull Task task) {

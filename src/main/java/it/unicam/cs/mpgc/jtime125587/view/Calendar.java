@@ -6,11 +6,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Calendar {
+public class Calendar extends Dialog {
     @FXML
     private DatePicker date;
     @FXML
@@ -22,7 +23,7 @@ public class Calendar {
     @FXML
     private TableColumn<Task, LocalTime> start;
     @FXML
-    private TableColumn<Task, Duration> time;
+    private TableColumn<Task, LocalTime> end;
     @FXML
     private TableColumn<Task, Status> status;
 
@@ -31,7 +32,12 @@ public class Calendar {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         project.setCellValueFactory(new PropertyValueFactory<>("project"));
         start.setCellValueFactory(new PropertyValueFactory<>("start"));
-        time.setCellValueFactory(new PropertyValueFactory<>("effTime"));
+        end.setCellValueFactory(new PropertyValueFactory<>("end"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
+    @FXML
+    private void openAddTask() throws IOException {
+        super.openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task");
     }
 }

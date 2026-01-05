@@ -2,11 +2,12 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.jtime125587.view.Main">
     <GridPane>
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" prefWidth="500.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="500.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints prefHeight="50.0" vgrow="SOMETIMES" />
@@ -23,5 +24,10 @@
                 <fx:include fx:id="moveToR" source="Reports.fxml" />
             </Tab>
         </TabPane>
+      <Label text="Java Time Schedule">
+         <font>
+            <Font name="HP Simplified" size="24.0" />
+         </font>
+      </Label>
     </GridPane>
 </Pane>

@@ -26,7 +26,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="Add Task">
+                  <Button mnemonicParsing="false" onAction="#openAddTask" text="Add Task">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -65,7 +65,7 @@
                 <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
                 <TableColumn fx:id="project" prefWidth="75.0" text="Project" />
                   <TableColumn fx:id="start" prefWidth="75.0" text="Start" />
-                  <TableColumn fx:id="time" prefWidth="75.0" text="Duration" />
+                  <TableColumn fx:id="end" prefWidth="75.0" text="End" />
                   <TableColumn fx:id="status" prefWidth="75.0" text="Status" />
               </columns>
                <columnResizePolicy>

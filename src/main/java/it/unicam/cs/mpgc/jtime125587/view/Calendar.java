@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -38,6 +37,6 @@ public class Calendar extends Dialog {
 
     @FXML
     private void openAddTask() throws IOException {
-        super.openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task");
+        openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task");
     }
 }

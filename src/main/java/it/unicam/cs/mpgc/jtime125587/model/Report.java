@@ -16,6 +16,6 @@ public class Report {
     private Long id;
     private String name;
     private String project;
-    private LocalDate start;
-    private LocalDate end;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

@@ -26,7 +26,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button mnemonicParsing="false" text="Add Report">
+                        <Button mnemonicParsing="false" onAction="#openAddReport" text="Add Report">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>

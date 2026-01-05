@@ -2,9 +2,9 @@ package it.unicam.cs.mpgc.jtime125587.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -17,10 +17,13 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String project;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
     private LocalDate date;
-    private LocalTime start;
-    private LocalTime end;
-    private Duration effTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private Status status;
+
+    public Task(String name, Project project, LocalDate date, LocalTime start, LocalTime end, Status status) {}
 }

@@ -4,18 +4,19 @@ import it.unicam.cs.mpgc.jtime125587.HibernateUtil;
 import it.unicam.cs.mpgc.jtime125587.model.Report;
 import lombok.Getter;
 import lombok.NonNull;
+import org.hibernate.Session;
 
-public class ReportController implements Controller<Report> {
+import java.util.function.Consumer;
+
+public class ReportController {
     @Getter
     private static final ReportController instance = new ReportController();
 
-    @Override
     public void add(@NonNull Report report) {
-        HibernateUtil.runInTransaction(session -> session.persist(report));
+        HibernateUtil.runInTransaction((Consumer<Session>) session -> session.persist(report));
     }
 
-    @Override
     public void delete(@NonNull Report report) {
-        HibernateUtil.runInTransaction(session -> session.remove(report));
+        HibernateUtil.runInTransaction((Consumer<Session>) session -> session.remove(report));
     }
 }

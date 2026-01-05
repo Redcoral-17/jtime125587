@@ -7,10 +7,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 
-public class Projects {
+public class Projects extends Dialog {
     @FXML
     private TableView<Project> projectList;
     @FXML
@@ -30,5 +31,10 @@ public class Projects {
         end.setCellValueFactory(new PropertyValueFactory<>("end"));
         time.setCellValueFactory(new PropertyValueFactory<>("time"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
+    @FXML
+    private void openAddProject() throws IOException {
+        openDialog("/it/unicam/cs/mpgc/jtime125587/AddProject.fxml", "Add Project");
     }
 }

@@ -1,12 +1,12 @@
 package it.unicam.cs.mpgc.jtime125587;
 
 import lombok.Getter;
+import lombok.NonNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -16,33 +16,23 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            Configuration cfg = new Configuration().configure();
-            return cfg.buildSessionFactory();
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError("Error building SessionFactory: " + ex);
-        }
-    }
-
-    public static <T> T runInTx(Function<Session, T> action) {
-        Objects.requireNonNull(action, "action must not be null");
-        Transaction tx = null;
-        try (Session session = getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            T result = action.apply(session);
-            tx.commit();
-            return result;
+            return new Configuration().configure().buildSessionFactory();
         } catch (Exception ex) {
-            if (tx != null && tx.getStatus().canRollback()) {
-                try { tx.rollback(); } catch (Exception ignore) {}
-            }
-            throw (RuntimeException) ex;
+            throw new IllegalArgumentException("Error building SessionFactory: " + ex);
         }
     }
 
-    public static void runInTx(Consumer<Session> action) {
-        runInTx(session -> {
+    public static <R> R doInSess(@NonNull Function<Session, R> action) {
+        try(Session session = sessionFactory.openSession()) {
+            return action.apply(session);
+        }
+    }
+
+    public static void doInTx(@NonNull Consumer<Session> action) {
+        try(Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
             action.accept(session);
-            return null;
-        });
+            tx.commit();
+        }
     }
 }

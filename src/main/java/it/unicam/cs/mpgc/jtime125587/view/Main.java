@@ -27,13 +27,11 @@ public class Main {
         });
     }
 
-    @FXML
     public static void openDialog(String fxmlFile, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
         javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
         dialog.setTitle(title);
         dialog.setDialogPane(loader.load());
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         dialog.showAndWait();
     }
 }

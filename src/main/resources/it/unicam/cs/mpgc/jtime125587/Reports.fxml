@@ -31,7 +31,7 @@
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" text="Delete Report" textFill="RED" GridPane.columnIndex="1">
+                        <Button fx:id="deleteReport" mnemonicParsing="false" text="Delete Report" textFill="RED" GridPane.columnIndex="1">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
@@ -52,10 +52,10 @@
                                 <Font name="System Italic" size="14.0" />
                             </font>
                         </Label>
-                  <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="reportList" prefWidth="150.0" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
-            <PieChart GridPane.rowIndex="2" />
+            <PieChart fx:id="selectedReport" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </children>

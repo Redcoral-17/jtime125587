@@ -26,12 +26,12 @@ public class Task {
     private LocalTime endTime;
     private Status status;
 
-    public Task(String name, Project project, LocalDate date, LocalTime start, LocalTime end) {
+    public Task(String name, Project project, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.name = name;
         this.project = project;
         this.date = date;
-        this.startTime = start;
-        this.endTime = end;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.status = Status.ACTIVE;
     }
 

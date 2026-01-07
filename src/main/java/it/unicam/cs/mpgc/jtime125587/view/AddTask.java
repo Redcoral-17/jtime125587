@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.jtime125587.view;
 
 import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
 import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
+import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -9,13 +10,15 @@ import javafx.scene.control.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static javafx.collections.FXCollections.observableList;
+
 public class AddTask {
     @FXML
     private DialogPane addTask;
     @FXML
     private  TextField name;
     @FXML
-    private ComboBox<String> project;
+    private ComboBox<Project> project;
     @FXML
     private DatePicker date;
     @FXML
@@ -26,23 +29,13 @@ public class AddTask {
     private ButtonType okButton;
 
     public void initialize() {
+        project.setItems(observableList(ProjectController.getInstance().getAll()));
         date.setValue(LocalDate.now());
-        project.getItems().setAll(ProjectController.getInstance().getProjectNames());
-        for (int hour = 0; hour < 24; hour++) {
-            for (int min = 0; min < 60; min += 15) {
-                start.getItems().add(LocalTime.of(hour, min));
-                end.getItems().add(LocalTime.of(hour, min));
-            }
-        }
-        Button confirm = (Button) addTask.lookupButton(okButton);
-        confirm.setOnAction(event -> {
-            TaskController.getInstance().add(new Task(
-                    name.getText(),
-                    ProjectController.getInstance().getProjectByName(project.getValue()),
-                    date.getValue(),
-                    start.getValue(),
-                    end.getValue()
-            ));
+        Main.setComboBox(start);
+        Main.setComboBox(end);
+        Button button = (Button) addTask.lookupButton(okButton);
+        button.setOnAction(event -> {
+            TaskController.getInstance().add(new Task(name.getText(), project.getValue(), date.getValue(), start.getValue(), end.getValue()));
         });
     }
 }

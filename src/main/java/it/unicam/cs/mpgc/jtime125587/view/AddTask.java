@@ -35,7 +35,7 @@ public class AddTask {
         Main.setComboBox(end);
         Button button = (Button) addTask.lookupButton(okButton);
         button.setOnAction(event -> {
-            Project p = ProjectController.getInstance().getByName(project.getPromptText());
+            Project p = ProjectController.getInstance().getByName(project.getValue());
             TaskController.getInstance().add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
         });
     }

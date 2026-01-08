@@ -31,7 +31,7 @@ public class AddReport {
         end.setValue(LocalDate.now().plusDays(7));
         Button button = (Button) addReport.lookupButton(okButton);
         button.setOnAction(event -> {
-            Project p = ProjectController.getInstance().getByName(project.getPromptText());
+            Project p = ProjectController.getInstance().getByName(project.getValue());
             ReportController.getInstance().add(new Report(name.getText(), p, start.getValue(), end.getValue()));
         });
     }

@@ -54,7 +54,7 @@ public class Projects {
     private void endProject() {
         Project project = projectList.getSelectionModel().getSelectedItem();
         project.setStatus(Status.COMPLETED);
-        ProjectController.getInstance().update(project);
+        if(ProjectController.getInstance().statusOf(project)) ProjectController.getInstance().update(project);
         refresh();
     }
 

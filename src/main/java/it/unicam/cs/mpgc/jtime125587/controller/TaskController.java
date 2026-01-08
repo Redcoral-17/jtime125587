@@ -1,13 +1,11 @@
 package it.unicam.cs.mpgc.jtime125587.controller;
 
 import it.unicam.cs.mpgc.jtime125587.HibernateUtil;
-import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import lombok.Getter;
 import lombok.NonNull;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.util.List;
 
 public class TaskController {
@@ -24,28 +22,13 @@ public class TaskController {
         return HibernateUtil.doInSess(session -> session.createQuery("from Task", Task.class).getResultList());
     }
 
-    public List<Task> getAllOf(@NonNull Project project) {
-        return HibernateUtil.doInSess(session -> session.createQuery("from Task where project = :project", Task.class)
-                .setParameter("project", project)
-                .getResultList());
-    }
-
-    public LocalDate getOldestDateTaskOf(@NonNull Project project) {
-        return HibernateUtil.doInSess(session -> session.createQuery("select date from Task where project = :project order by date asc", LocalDate.class)
-                .setParameter("project", project)
-                .setMaxResults(1)
-                .getSingleResultOrNull());
-    }
-
-    public LocalDate getLatestDateTaskOf(@NonNull Project project) {
-        return HibernateUtil.doInSess(session -> session.createQuery("select date from Task where project = :project order by date desc", LocalDate.class)
-                .setParameter("project", project)
-                .setMaxResults(1)
-                .getSingleResultOrNull());
-    }
-
     public Duration timeOf(@NonNull Task task) {
         return Duration.between(task.getStartTime(), task.getEndTime());
+    }
+
+    public String getProjOf(@NonNull Task task) {
+        if(task.getProject() != null) return task.getProject().getName();
+        return "No Project";
     }
 }
 

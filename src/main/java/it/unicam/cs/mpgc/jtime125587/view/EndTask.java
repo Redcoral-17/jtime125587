@@ -42,7 +42,7 @@ public class EndTask {
     public void setTask(@NonNull Task task) {
         this.task = task;
         name.setText(task.getName());
-        project.setText(task.getProject().getName());
+        project.setText(TaskController.getInstance().getProjOf(task));
         date.setText(task.getDate().toString());
         start.setValue(task.getStartTime());
         end.setValue(task.getEndTime());

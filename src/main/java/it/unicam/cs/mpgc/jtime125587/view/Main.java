@@ -3,12 +3,11 @@ package it.unicam.cs.mpgc.jtime125587.view;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.Optional;
 
 public class Main {
     @FXML
@@ -25,16 +24,20 @@ public class Main {
             if (newTab != null) {
                 if (newTab.getText().equals("Calendar") && moveToCalendar != null) moveToCalendar.refresh();
                 if (newTab.getText().equals("Projects") && moveToProjects != null) moveToProjects.refresh();
-                if (newTab.getText().equals("Reports") && moveToReports != null) moveToReports.initialize();
+                if (newTab.getText().equals("Reports") && moveToReports != null) moveToReports.refresh();
             }
         });
     }
 
-    public static void openDialog(String fxmlFile, String title) throws IOException {
+    public static void openDialog(String fxmlFile, String title, Task task) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
-        javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
+        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle(title);
         dialog.setDialogPane(loader.load());
+        if(task != null) {
+            EndTask controller = loader.getController();
+            controller.setTask(task);
+        }
         dialog.showAndWait();
     }
 

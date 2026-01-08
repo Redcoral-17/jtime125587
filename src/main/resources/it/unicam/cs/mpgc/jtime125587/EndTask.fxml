@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <DialogPane fx:id="endTask" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.jtime125587.view.EndTask">
     <content>
@@ -15,8 +16,14 @@
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
             </rowConstraints>
-         <Label fx:id="name" />
-         <Label fx:id="project" GridPane.columnIndex="1" />
+         <Label fx:id="name">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font></Label>
+         <Label fx:id="project" GridPane.columnIndex="1">
+            <font>
+               <Font name="System Italic" size="12.0" />
+            </font></Label>
          <Label fx:id="date" GridPane.rowIndex="1" />
             <ComboBox fx:id="start" maxWidth="-Infinity" prefWidth="135.0" promptText="Start" GridPane.rowIndex="2" />
             <ComboBox fx:id="end" maxWidth="-Infinity" prefWidth="135.0" promptText="End" GridPane.columnIndex="1" GridPane.rowIndex="2" />

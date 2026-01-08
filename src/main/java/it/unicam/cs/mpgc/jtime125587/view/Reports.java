@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 
 import java.io.IOException;
 
+import static it.unicam.cs.mpgc.jtime125587.view.Main.openDialog;
 import static javafx.collections.FXCollections.observableList;
 
 public class Reports {
@@ -17,17 +18,22 @@ public class Reports {
     private PieChart selectedReport;
 
     public void initialize() {
+        refresh();
+    }
+
+    public void refresh() {
         reportList.setItems(observableList(ReportController.getInstance().getAll()));
     }
 
     @FXML
     private void openAddReport() throws IOException {
-        Main.openDialog("/it/unicam/cs/mpgc/jtime125587/AddReport.fxml", "Add Report");
+        openDialog("/it/unicam/cs/mpgc/jtime125587/AddReport.fxml", "Add Report", null);
+        refresh();
     }
 
     @FXML
     private void deleteReport() {
-        Report report = reportList.getSelectionModel().getSelectedItem();
-        ReportController.getInstance().delete(report);
+        ReportController.getInstance().delete(reportList.getSelectionModel().getSelectedItem());
+        refresh();
     }
 }

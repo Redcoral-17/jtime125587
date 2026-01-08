@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.jtime125587.view;
 
 import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
-import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,9 +10,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDate;
 
+import static it.unicam.cs.mpgc.jtime125587.view.Main.openDialog;
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class Projects {
@@ -22,11 +20,11 @@ public class Projects {
     @FXML
     private TableColumn<Project, String> name;
     @FXML
-    private TableColumn<Project, LocalDate> start;
+    private TableColumn<Project, String> start;
     @FXML
-    private TableColumn<Project, LocalDate> end;
+    private TableColumn<Project, String> end;
     @FXML
-    private TableColumn<Project, Duration> time;
+    private TableColumn<Project, String> time;
     @FXML
     private TableColumn<Project, Status> status;
 
@@ -34,9 +32,9 @@ public class Projects {
         refresh();
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         start.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(TaskController.getInstance().getOldestDateTaskOf(cellData.getValue())));
+                new SimpleObjectProperty<>(ProjectController.getInstance().getOldestDateTaskOf(cellData.getValue())));
         end.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(TaskController.getInstance().getLatestDateTaskOf(cellData.getValue())));
+                new SimpleObjectProperty<>(ProjectController.getInstance().getLatestDateTaskOf(cellData.getValue())));
         time.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(ProjectController.getInstance().timeOf(cellData.getValue())));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -48,7 +46,7 @@ public class Projects {
 
     @FXML
     private void openAddProject() throws IOException {
-        Main.openDialog("/it/unicam/cs/mpgc/jtime125587/AddProject.fxml", "Add Project");
+        openDialog("/it/unicam/cs/mpgc/jtime125587/AddProject.fxml", "Add Project", null);
         refresh();
     }
 
@@ -57,6 +55,7 @@ public class Projects {
         Project project = projectList.getSelectionModel().getSelectedItem();
         project.setStatus(Status.COMPLETED);
         ProjectController.getInstance().update(project);
+        refresh();
     }
 
     @FXML

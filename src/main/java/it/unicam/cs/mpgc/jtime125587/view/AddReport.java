@@ -17,7 +17,7 @@ public class AddReport {
     @FXML
     private TextField name;
     @FXML
-    private ComboBox<Project> project;
+    private ComboBox<String> project;
     @FXML
     private DatePicker start;
     @FXML
@@ -26,10 +26,13 @@ public class AddReport {
     private ButtonType okButton;
 
     public void initialize() {
-        project.setItems(observableList(ProjectController.getInstance().getAll()));
+        project.setItems(observableList(ProjectController.getInstance().getAllProjNames()));
         start.setValue(LocalDate.now());
-        end.setValue(LocalDate.now());
+        end.setValue(LocalDate.now().plusDays(7));
         Button button = (Button) addReport.lookupButton(okButton);
-        button.setOnAction(event -> ReportController.getInstance().add(new Report(name.getText(), project.getValue(), start.getValue(), end.getValue())));
+        button.setOnAction(event -> {
+            Project p = ProjectController.getInstance().getByName(project.getPromptText());
+            ReportController.getInstance().add(new Report(name.getText(), p, start.getValue(), end.getValue()));
+        });
     }
 }

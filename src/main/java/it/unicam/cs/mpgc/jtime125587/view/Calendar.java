@@ -5,7 +5,6 @@ import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -13,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static it.unicam.cs.mpgc.jtime125587.view.Main.*;
 import static javafx.collections.FXCollections.observableList;
 
 public class Calendar {
@@ -36,7 +36,7 @@ public class Calendar {
         date.setValue(LocalDate.now());
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         project.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getProject().getName()));
+                new SimpleObjectProperty<>(TaskController.getInstance().getProjOf(cellData.getValue())));
         start.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getStartTime().format(DateTimeFormatter.ofPattern("HH:mm"))));
         end.setCellValueFactory(cellData ->
@@ -50,21 +50,17 @@ public class Calendar {
 
     @FXML
     private void openAddTask() throws IOException {
-        Main.openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task");
+        openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task", null);
         refresh();
     }
 
     @FXML
     private void openEndTask() throws IOException {
         Task task = taskList.getSelectionModel().getSelectedItem();
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/it/unicam/cs/mpgc/jtime125587/EndTask.fxml"));
-        javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
-        dialog.setTitle("End Task");
-        dialog.setDialogPane(loader.load());
-        EndTask controller = loader.getController();
-        controller.setTask(task);
-        dialog.showAndWait();
-        refresh();
+        if(task != null) {
+            openDialog("/it/unicam/cs/mpgc/jtime125587/EndTask.fxml", "End Task", task);
+            refresh();
+        }
     }
 
     @FXML

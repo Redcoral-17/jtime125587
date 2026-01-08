@@ -18,7 +18,7 @@ public class AddTask {
     @FXML
     private  TextField name;
     @FXML
-    private ComboBox<Project> project;
+    private ComboBox<String> project;
     @FXML
     private DatePicker date;
     @FXML
@@ -29,13 +29,14 @@ public class AddTask {
     private ButtonType okButton;
 
     public void initialize() {
-        project.setItems(observableList(ProjectController.getInstance().getAll()));
+        project.setItems(observableList(ProjectController.getInstance().getAllProjNames()));
         date.setValue(LocalDate.now());
         Main.setComboBox(start);
         Main.setComboBox(end);
         Button button = (Button) addTask.lookupButton(okButton);
         button.setOnAction(event -> {
-            TaskController.getInstance().add(new Task(name.getText(), project.getValue(), date.getValue(), start.getValue(), end.getValue()));
+            Project p = ProjectController.getInstance().getByName(project.getPromptText());
+            TaskController.getInstance().add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
         });
     }
 }

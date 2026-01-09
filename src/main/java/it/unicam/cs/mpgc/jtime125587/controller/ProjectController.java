@@ -16,17 +16,17 @@ public class ProjectController {
     @Getter
     private static final ProjectController instance = new ProjectController();
 
-    public void add(@NonNull Project project) {
-        HibernateUtil.doInTx(session -> session.persist(project));
-    }
-
-    public void update(@NonNull Project project) { HibernateUtil.doInTx(session -> session.merge(project)); }
-
-    public void delete(@NonNull Project project) { HibernateUtil.doInTx(session -> session.remove(project)); }
-
-    public List<Project> getAll() {
-        return HibernateUtil.doInSess(session -> session.createQuery("from Project", Project.class).getResultList());
-    }
+//    public void add(@NonNull Project project) {
+//        HibernateUtil.doInTx(session -> session.persist(project));
+//    }
+//
+//    public void update(@NonNull Project project) { HibernateUtil.doInTx(session -> session.merge(project)); }
+//
+//    public void delete(@NonNull Project project) { HibernateUtil.doInTx(session -> session.remove(project)); }
+//
+//    public List<Project> getAll() {
+//        return HibernateUtil.doInSess(session -> session.createQuery("from Project", Project.class).getResultList());
+//    }
 
     public List<String> getAllProjNames() {
         return getAll().stream().map(Project::getName).toList();

@@ -31,7 +31,7 @@ public class AddTask {
     private ButtonType okButton;
 
     public void initialize() {
-        project.setItems(observableList(ProjectController.getInstance().getAllProjNames()));
+        project.setItems(observableList(ProjectController.getInstance().getActiveProjNames()));
         date.setValue(LocalDate.now());
         Main.setComboBox(start);
         Main.setComboBox(end);
@@ -49,6 +49,10 @@ public class AddTask {
         if(start.getValue() == null) { showError("Start time cannot be empty"); return true; }
         if(end.getValue() == null) { showError("End time cannot be empty"); return true; }
         if(start.getValue().isAfter(end.getValue())) { showError("Start time cannot be after end time"); return true; }
+        if(TaskController.getInstance().checkFreeTime(start.getValue(), end.getValue(), date.getValue())) {
+            showError("There is already a task scheduled in this time range");
+            return true;
+        }
         else { return false; }
     }
 }

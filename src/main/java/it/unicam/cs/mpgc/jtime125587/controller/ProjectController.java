@@ -32,6 +32,10 @@ public class ProjectController {
         return getAll().stream().map(Project::getName).toList();
     }
 
+    public List<String> getActiveProjNames() {
+        return getAll().stream().filter(project -> project.getStatus() == Status.ACTIVE).map(Project::getName).toList();
+    }
+
     public Project getByName(String name) {
         return getAll().stream().filter(project -> project.getName().equals(name)).findFirst().orElse(null);
     }

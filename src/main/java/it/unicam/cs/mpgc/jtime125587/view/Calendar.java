@@ -58,7 +58,7 @@ public class Calendar {
     @FXML
     private void openEndTask() throws IOException {
         Task task = taskList.getSelectionModel().getSelectedItem();
-        if(task != null && task.getStatus() != Status.COMPLETED) {
+        if(task != null && task.getStatus() == Status.ACTIVE) {
             openDialog("/it/unicam/cs/mpgc/jtime125587/EndTask.fxml", "End Task", task);
             refresh();
         }
@@ -67,7 +67,9 @@ public class Calendar {
     @FXML
     private void deleteTask() {
         Task task = taskList.getSelectionModel().getSelectedItem();
-        TaskController.getInstance().delete(task);
-        refresh();
+        if(task != null && task.getStatus() == Status.ACTIVE) {
+            TaskController.getInstance().delete(task);
+            refresh();
+        }
     }
 }

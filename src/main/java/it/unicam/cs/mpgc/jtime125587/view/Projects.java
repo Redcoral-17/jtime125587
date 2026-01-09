@@ -53,15 +53,19 @@ public class Projects {
     @FXML
     private void endProject() {
         Project project = projectList.getSelectionModel().getSelectedItem();
-        project.setStatus(Status.COMPLETED);
-        if(ProjectController.getInstance().statusOf(project)) ProjectController.getInstance().update(project);
-        refresh();
+        if(project != null && ProjectController.getInstance().statusOf(project)) {
+            project.setStatus(Status.COMPLETED);
+            ProjectController.getInstance().update(project);
+            refresh();
+        }
     }
 
     @FXML
     private void deleteProject() {
         Project project = projectList.getSelectionModel().getSelectedItem();
-        if(ProjectController.getInstance().statusOf(project)) ProjectController.getInstance().delete(project);
-        refresh();
+        if(project != null && ProjectController.getInstance().getTasksOf(project).isEmpty()) {
+            ProjectController.getInstance().delete(project);
+            refresh();
+        }
     }
 }

@@ -13,16 +13,17 @@ import static javafx.collections.FXCollections.observableList;
 
 public class Reports {
     @FXML
-    private ComboBox<Report> reportList;
+    private ComboBox<String> reportList;
     @FXML
     private PieChart selectedReport;
 
     public void initialize() {
-        refresh();
+        reportList.setItems(observableList(ReportController.getInstance().getAllRepoNames()));
+        reportList.valueProperty().addListener((obs, oldReport, newReport) -> refresh());
     }
 
     public void refresh() {
-        reportList.setItems(observableList(ReportController.getInstance().getAll()));
+
     }
 
     @FXML
@@ -31,9 +32,9 @@ public class Reports {
         refresh();
     }
 
-    @FXML
-    private void deleteReport() {
-        ReportController.getInstance().delete(reportList.getSelectionModel().getSelectedItem());
-        refresh();
-    }
+//    @FXML
+//    private void deleteReport() {
+//        ReportController.getInstance().delete(reportList.getSelectionModel().getSelectedItem());
+//        refresh();
+//    }
 }

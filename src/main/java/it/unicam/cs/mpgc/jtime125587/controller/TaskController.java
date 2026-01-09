@@ -7,6 +7,7 @@ import lombok.NonNull;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class TaskController {
@@ -34,6 +35,15 @@ public class TaskController {
     public String getProjOf(@NonNull Task task) {
         if(task.getProject() != null) return task.getProject().getName();
         return "No Project";
+    }
+
+    public boolean checkFreeTime(@NonNull LocalTime start, @NonNull LocalTime end, @NonNull LocalDate date) {
+        return getTasksOf(date).stream().allMatch(task ->
+                (start.isAfter(task.getStartTime()) && start.isBefore(task.getEndTime())) ||
+                        (end.isAfter(task.getStartTime()) && end.isBefore(task.getEndTime())) ||
+                        ((task.getStartTime().equals(start) || task.getStartTime().isAfter(start)) &&
+                                (task.getEndTime().equals(end)   || task.getEndTime().isBefore(end)))
+        );
     }
 }
 

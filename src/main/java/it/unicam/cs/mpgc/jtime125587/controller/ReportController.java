@@ -18,4 +18,8 @@ public class ReportController {
     public List<Report> getAll() {
         return HibernateUtil.doInSess(session -> session.createQuery("from Report", Report.class).getResultList());
     }
+
+    public List<String> getAllRepoNames() {
+        return getAll().stream().map(Report::getName).toList();
+    }
 }

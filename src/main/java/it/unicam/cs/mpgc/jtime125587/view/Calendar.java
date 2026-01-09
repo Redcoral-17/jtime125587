@@ -32,8 +32,8 @@ public class Calendar {
     private TableColumn<Task, Status> status;
 
     public void initialize() {
-        refresh();
         date.setValue(LocalDate.now());
+        date.valueProperty().addListener((obs, oldDate, newDate) -> refresh());
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         project.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(TaskController.getInstance().getProjOf(cellData.getValue())));
@@ -42,10 +42,11 @@ public class Calendar {
         end.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getEndTime().format(DateTimeFormatter.ofPattern("HH:mm"))));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        refresh();
     }
 
     public void refresh() {
-        taskList.setItems(observableList(TaskController.getInstance().getAll()));
+        taskList.setItems(observableList(TaskController.getInstance().getTasksOf(date.getValue())));
     }
 
     @FXML
@@ -57,7 +58,7 @@ public class Calendar {
     @FXML
     private void openEndTask() throws IOException {
         Task task = taskList.getSelectionModel().getSelectedItem();
-        if(task != null) {
+        if(task != null && task.getStatus() != Status.COMPLETED) {
             openDialog("/it/unicam/cs/mpgc/jtime125587/EndTask.fxml", "End Task", task);
             refresh();
         }

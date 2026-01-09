@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 
 public class TaskController {
@@ -20,6 +21,10 @@ public class TaskController {
 
     public List<Task> getAll() {
         return HibernateUtil.doInSess(session -> session.createQuery("from Task", Task.class).getResultList());
+    }
+
+    public List<Task> getTasksOf(@NonNull LocalDate date) {
+        return getAll().stream().filter(task -> task.getDate().equals(date)).toList();
     }
 
     public Duration timeOf(@NonNull Task task) {

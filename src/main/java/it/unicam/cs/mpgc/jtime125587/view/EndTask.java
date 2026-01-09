@@ -3,11 +3,14 @@ package it.unicam.cs.mpgc.jtime125587.view;
 import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import lombok.NonNull;
 
 import java.time.LocalTime;
+
+import static it.unicam.cs.mpgc.jtime125587.view.Main.showError;
 
 public class EndTask {
     private Task task;
@@ -30,9 +33,8 @@ public class EndTask {
         Main.setComboBox(start);
         Main.setComboBox(end);
         Button button = (Button) endTask.lookupButton(okButton);
-        button.setOnAction(event -> {
-            if(start.getValue() != null) task.setStartTime(start.getValue());
-            if(end.getValue() != null) task.setEndTime(end.getValue());
+        button.addEventFilter(ActionEvent.ACTION, event -> {
+            if(check()) { event.consume(); return; }
             task.setStatus(Status.COMPLETED);
             TaskController.getInstance().update(task);
         });
@@ -46,5 +48,10 @@ public class EndTask {
         date.setText(task.getDate().toString());
         start.setValue(task.getStartTime());
         end.setValue(task.getEndTime());
+    }
+
+    private boolean check() {
+        if(start.getValue().isAfter(end.getValue())) { showError("Start time cannot be after end time"); return true; }
+        else { return false; }
     }
 }

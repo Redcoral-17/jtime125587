@@ -4,12 +4,14 @@ import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
 import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static it.unicam.cs.mpgc.jtime125587.view.Main.showError;
 import static javafx.collections.FXCollections.observableList;
 
 public class AddTask {
@@ -34,9 +36,19 @@ public class AddTask {
         Main.setComboBox(start);
         Main.setComboBox(end);
         Button button = (Button) addTask.lookupButton(okButton);
-        button.setOnAction(event -> {
+        button.addEventFilter(ActionEvent.ACTION, event -> {
+            if(check()) {  event.consume(); return; }
             Project p = ProjectController.getInstance().getByName(project.getValue());
             TaskController.getInstance().add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
         });
+    }
+
+    private boolean check() {
+        if(name.getText().isBlank()) { showError("Name cannot be empty"); return true; }
+        if(date.getValue() == null) { showError("Date cannot be empty"); return true; }
+        if(start.getValue() == null) { showError("Start time cannot be empty"); return true; }
+        if(end.getValue() == null) { showError("End time cannot be empty"); return true; }
+        if(start.getValue().isAfter(end.getValue())) { showError("Start time cannot be after end time"); return true; }
+        else { return false; }
     }
 }

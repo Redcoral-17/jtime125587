@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.jtime125587.controller;
 
-import it.unicam.cs.mpgc.jtime125587.HibernateUtil;
 import lombok.NonNull;
 
 import java.util.List;
@@ -9,9 +8,7 @@ public abstract class AbstractController<T> implements Controller<T> {
 
     protected final Class<T> entityClass;
 
-    public AbstractController(Class<T> entityClass) {
-        this.entityClass = entityClass;
-    }
+    public AbstractController(Class<T> entityClass) { this.entityClass = entityClass; }
 
     @Override
     public void add(@NonNull T entity) { HibernateUtil.doInTx(session -> session.persist(entity)); }

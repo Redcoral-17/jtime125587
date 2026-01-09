@@ -35,6 +35,8 @@ public class EndTask {
         Button button = (Button) endTask.lookupButton(okButton);
         button.addEventFilter(ActionEvent.ACTION, event -> {
             if(check()) { event.consume(); return; }
+            task.setStartTime(start.getValue());
+            task.setEndTime(end.getValue());
             task.setStatus(Status.COMPLETED);
             TaskController.getInstance().update(task);
         });
@@ -52,6 +54,10 @@ public class EndTask {
 
     private boolean check() {
         if(start.getValue().isAfter(end.getValue())) { showError("Start time cannot be after end time"); return true; }
+        if(TaskController.getInstance().checkFreeTime(start.getValue(), end.getValue(), task.getDate())) {
+            showError("There is already a task scheduled in this time range");
+            return true;
+        }
         else { return false; }
     }
 }

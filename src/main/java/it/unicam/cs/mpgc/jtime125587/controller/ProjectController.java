@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.jtime125587.controller;
 
-import it.unicam.cs.mpgc.jtime125587.HibernateUtil;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
@@ -12,21 +11,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ProjectController {
+public class ProjectController extends AbstractController<Project> {
     @Getter
-    private static final ProjectController instance = new ProjectController();
+    private static final ProjectController instance = new ProjectController(Project.class);
 
-//    public void add(@NonNull Project project) {
-//        HibernateUtil.doInTx(session -> session.persist(project));
-//    }
-//
-//    public void update(@NonNull Project project) { HibernateUtil.doInTx(session -> session.merge(project)); }
-//
-//    public void delete(@NonNull Project project) { HibernateUtil.doInTx(session -> session.remove(project)); }
-//
-//    public List<Project> getAll() {
-//        return HibernateUtil.doInSess(session -> session.createQuery("from Project", Project.class).getResultList());
-//    }
+    private ProjectController(Class<Project> entityClass) { super(entityClass); }
 
     public List<String> getAllProjNames() {
         return getAll().stream().map(Project::getName).toList();
@@ -59,7 +48,7 @@ public class ProjectController {
                 .min(LocalDate::compareTo)
                 .orElse(null);
         if(date != null) return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        return "Not available";
+        return "-Not available-";
     }
 
     public String getLatestDateTaskOf(@NonNull Project project) {
@@ -69,7 +58,7 @@ public class ProjectController {
                 .max(LocalDate::compareTo)
                 .orElse(null);
         if(date != null) return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        return "Not available";
+        return "-Not available-";
     }
 
     public String timeOf(@NonNull Project project) {

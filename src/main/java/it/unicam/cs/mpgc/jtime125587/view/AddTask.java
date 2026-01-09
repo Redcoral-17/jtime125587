@@ -1,7 +1,5 @@
 package it.unicam.cs.mpgc.jtime125587.view;
 
-import it.unicam.cs.mpgc.jtime125587.controller.Controller;
-import it.unicam.cs.mpgc.jtime125587.controller.PersistenteController;
 import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
 import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
@@ -20,7 +18,7 @@ public class AddTask {
     @FXML
     private DialogPane addTask;
     @FXML
-    private  TextField name;
+    private TextField name;
     @FXML
     private ComboBox<String> project;
     @FXML
@@ -41,8 +39,7 @@ public class AddTask {
         button.addEventFilter(ActionEvent.ACTION, event -> {
             if(check()) {  event.consume(); return; }
             Project p = ProjectController.getInstance().getByName(project.getValue());
-            new PersistenteController<>(Task.class).add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
-//            Controller.add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
+            TaskController.getInstance().add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
         });
     }
 

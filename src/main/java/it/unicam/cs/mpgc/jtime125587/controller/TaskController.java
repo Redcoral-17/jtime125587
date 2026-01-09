@@ -7,6 +7,7 @@ import lombok.NonNull;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 
 public class TaskController extends AbstractController<Task> {
@@ -16,7 +17,8 @@ public class TaskController extends AbstractController<Task> {
     private TaskController(Class<Task> entityClass) { super(entityClass); }
 
     public List<Task> getTasksOf(@NonNull LocalDate date) {
-        return getAll().stream().filter(task -> task.getDate().equals(date)).toList();
+        return getAll().stream().filter(task -> task.getDate().equals(date))
+                .sorted(Comparator.comparing(Task::getStartTime)).toList();
     }
 
     public Duration timeOf(@NonNull Task task) {

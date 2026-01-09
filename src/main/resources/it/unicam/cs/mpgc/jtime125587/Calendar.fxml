@@ -4,17 +4,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.jtime125587.view.Calendar">
-    <GridPane prefHeight="600.0" prefWidth="500.0">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.jtime125587.view.Calendar">
+    <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
-            <RowConstraints prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints prefHeight="450.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <GridPane>
+        <GridPane maxHeight="1.7976931348623157E308" maxWidth="750.0" prefWidth="500.0" GridPane.halignment="LEFT">
             <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="100.0" />
@@ -39,10 +39,10 @@
                 </font>
             </Button>
         </GridPane>
-        <GridPane GridPane.rowIndex="1">
+        <GridPane maxHeight="1.7976931348623157E308" maxWidth="750.0" prefWidth="500.0" GridPane.halignment="LEFT" GridPane.rowIndex="1">
             <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
@@ -54,7 +54,7 @@
                 </font>
             </Label>
         </GridPane>
-        <TableView fx:id="taskList" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+        <TableView fx:id="taskList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="2">
             <columns>
                 <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
                 <TableColumn fx:id="project" prefWidth="75.0" text="Project" />

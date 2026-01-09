@@ -21,6 +21,7 @@ public abstract class AbstractController<T> implements Controller<T> {
 
     @Override
     public List<T> getAll() {
-        return HibernateUtil.doInSess(session -> session.createQuery("from " + entityClass.getSimpleName(), entityClass).getResultList());
+        return HibernateUtil.doInSess(session ->
+                session.createQuery("from " + entityClass.getSimpleName(), entityClass).getResultList());
     }
 }

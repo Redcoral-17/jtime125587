@@ -24,7 +24,7 @@ public class Projects {
     @FXML
     private TableColumn<Project, String> end;
     @FXML
-    private TableColumn<Project, String> time;
+    private TableColumn<Project, String> duration;
     @FXML
     private TableColumn<Project, Status> status;
 
@@ -35,8 +35,8 @@ public class Projects {
                 new SimpleObjectProperty<>(ProjectController.getInstance().getOldestDateTaskOf(cellData.getValue())));
         end.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(ProjectController.getInstance().getLatestDateTaskOf(cellData.getValue())));
-        time.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(ProjectController.getInstance().timeOf(cellData.getValue())));
+        duration.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(ProjectController.getInstance().durationOf(cellData.getValue())));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
 

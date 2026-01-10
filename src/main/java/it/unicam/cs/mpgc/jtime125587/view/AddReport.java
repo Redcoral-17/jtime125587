@@ -4,11 +4,13 @@ import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
 import it.unicam.cs.mpgc.jtime125587.controller.ReportController;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Report;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
 
+import static it.unicam.cs.mpgc.jtime125587.view.Main.showError;
 import static javafx.collections.FXCollections.observableList;
 
 public class AddReport {
@@ -30,9 +32,18 @@ public class AddReport {
         start.setValue(LocalDate.now());
         end.setValue(LocalDate.now().plusDays(7));
         Button button = (Button) addReport.lookupButton(okButton);
-        button.setOnAction(event -> {
+        button.addEventFilter(ActionEvent.ACTION, event -> {
+            if(check()) {  event.consume(); return; }
             Project p = ProjectController.getInstance().getByName(project.getValue());
             ReportController.getInstance().add(new Report(name.getText(), p, start.getValue(), end.getValue()));
         });
+    }
+
+    private boolean check() {
+        if(name.getText().isBlank()) { showError("Name cannot be empty"); return true; }
+        if(start.getValue() != null && end.getValue() != null) {
+            if(start.getValue().isAfter(end.getValue())) { showError("Start date cannot be after end date"); return true; }
+        }
+        return false;
     }
 }

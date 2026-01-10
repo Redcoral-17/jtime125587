@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -24,6 +25,8 @@ public class Task {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
+    private Duration oldDuration;
+    private Duration duration;
     private Status status;
 
     public Task(String name, Project project, LocalDate date, LocalTime startTime, LocalTime endTime) {
@@ -32,6 +35,8 @@ public class Task {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.oldDuration = null;
+        this.duration = Duration.between(startTime, endTime);
         this.status = Status.ACTIVE;
     }
 

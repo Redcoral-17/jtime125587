@@ -36,37 +36,24 @@ public class ProjectController extends AbstractController<Project> {
     }
 
     public boolean statusOf(@NonNull Project project) {
-        return getTasksOf(project)
-                .stream()
-                .allMatch(task -> task.getStatus() == Status.COMPLETED);
+        return getTasksOf(project).stream().allMatch(task -> task.getStatus() == Status.COMPLETED);
     }
 
     public String getOldestDateTaskOf(@NonNull Project project) {
-        LocalDate date = getTasksOf(project)
-                .stream()
-                .map(Task::getDate)
-                .min(LocalDate::compareTo)
-                .orElse(null);
+        LocalDate date = getTasksOf(project).stream().map(Task::getDate).min(LocalDate::compareTo).orElse(null);
         if(date != null) return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         return "-Not available-";
     }
 
     public String getLatestDateTaskOf(@NonNull Project project) {
-        LocalDate date = getTasksOf(project)
-                .stream()
-                .map(Task::getDate)
-                .max(LocalDate::compareTo)
-                .orElse(null);
+        LocalDate date = getTasksOf(project).stream().map(Task::getDate).max(LocalDate::compareTo).orElse(null);
         if(date != null) return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         return "-Not available-";
     }
 
-    public String timeOf(@NonNull Project project) {
-        Duration time = getTasksOf(project)
-                .stream()
-                .map(TaskController.getInstance()::timeOf)
-                .reduce(Duration.ZERO, Duration::plus);
-        if(time != null) return time.toHours() + " h " + (time.toMinutesPart()) + " m";
-        return "Not available";
+    public String durationOf(@NonNull Project project) {
+        Duration duration = getTasksOf(project).stream().map(Task::getDuration).reduce(Duration.ZERO, Duration::plus);
+        if(duration != null) return duration.toHours() + " h " + (duration.toMinutesPart()) + " m";
+        return "-Not available-";
     }
 }

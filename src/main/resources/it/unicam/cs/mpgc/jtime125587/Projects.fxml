@@ -42,7 +42,7 @@
                 <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
                 <TableColumn fx:id="start" prefWidth="75.0" text="Start" />
                 <TableColumn fx:id="end" prefWidth="75.0" text="End" />
-                <TableColumn fx:id="time" prefWidth="75.0" text="Duration" />
+                <TableColumn fx:id="duration" prefWidth="75.0" text="Duration" />
                 <TableColumn fx:id="status" prefWidth="75.0" text="Status" />
             </columns>
             <columnResizePolicy>

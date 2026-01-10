@@ -1,8 +1,14 @@
 package it.unicam.cs.mpgc.jtime125587.view;
 
 import it.unicam.cs.mpgc.jtime125587.controller.ReportController;
+import it.unicam.cs.mpgc.jtime125587.model.Report;
+import it.unicam.cs.mpgc.jtime125587.model.Status;
+import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 import java.io.IOException;
 
@@ -13,15 +19,32 @@ public class Reports {
     @FXML
     private ComboBox<String> reportList;
     @FXML
-//    private PieChart selectedReport;
+    private Label project;
+    @FXML
+    private Label startDate;
+    @FXML
+    private Label endDate;
+    @FXML
+    private TableView<Task> taskOfRepoList;
+    @FXML
+    private TableColumn<Task, String> date;
+    @FXML
+    private TableColumn<Task, Status> status;
+    @FXML
+    private TableColumn<Task, String> duration;
 
     public void initialize() {
-        reportList.setItems(observableList(ReportController.getInstance().getAllRepoNames()));
-        reportList.valueProperty().addListener((obs, oldReport, newReport) -> refresh());
+        reportList.valueProperty().addListener((obs, oldReport, newReport) -> {
+            Report report = ReportController.getInstance().getByName(newReport);
+            taskOfRepoList.setItems(observableList(ReportController.getInstance().getTasksOf(report)));
+            project.setText(report.getProject().getName());
+            startDate.setText(report.getStartDate().toString());
+            endDate.setText(report.getEndDate().toString());
+        });
     }
 
     public void refresh() {
-
+        reportList.setItems(observableList(ReportController.getInstance().getAllRepoNames()));
     }
 
     @FXML
@@ -32,7 +55,8 @@ public class Reports {
 
     @FXML
     private void deleteReport() {
-//        ReportController.getInstance().delete(reportList.getSelectionModel().getSelectedItem());
+        Report report = ReportController.getInstance().getByName(reportList.getValue());
+        ReportController.getInstance().delete(report);
         refresh();
     }
 }

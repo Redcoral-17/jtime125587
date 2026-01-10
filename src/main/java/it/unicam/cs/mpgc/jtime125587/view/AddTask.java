@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.jtime125587.view;
 import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
 import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
+import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,10 +50,10 @@ public class AddTask {
         if(start.getValue() == null) { showError("Start time cannot be empty"); return true; }
         if(end.getValue() == null) { showError("End time cannot be empty"); return true; }
         if(start.getValue().isAfter(end.getValue())) { showError("Start time cannot be after end time"); return true; }
-        if(TaskController.getInstance().checkFreeTime(start.getValue(), end.getValue(), date.getValue())) {
+        if(TaskController.getInstance().checkFreeTime(Status.ACTIVE, start.getValue(), end.getValue(), date.getValue())) {
             showError("There is already a task scheduled in this time range");
             return true;
         }
-        else { return false; }
+        return false;
     }
 }

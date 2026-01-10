@@ -30,7 +30,7 @@ public class Reports {
     @FXML
     private Label tasksStatus;
     @FXML
-    private TableView<Task> taskOfRepoList;
+    private TableView<Task> reportTable;
     @FXML
     private TableColumn<Task, String> name;
     @FXML
@@ -42,8 +42,7 @@ public class Reports {
 
     public void initialize() {
         refresh();
-        reportList.setItems(observableList(ReportController.getInstance().getAllRepoNames()));
-        reportList.valueProperty().addListener((obs, oldReport, newReport) -> refresh());
+        reportList.valueProperty().addListener((obs, oldReport, newReport) -> setReportTable());
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         date.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
@@ -53,9 +52,14 @@ public class Reports {
     }
 
     public void refresh() {
+        reportList.setItems(observableList(ReportController.getInstance().getAllRepoNames()));
+    }
+
+    @FXML
+    private void setReportTable() {
         Report report = ReportController.getInstance().getByName(reportList.getValue());
         if(report == null) return;
-        taskOfRepoList.setItems(observableList(ReportController.getInstance().getTasksOf(report)));
+        reportTable.setItems(observableList(ReportController.getInstance().getTasksOf(report)));
         if(report.getProject() != null) project.setText(report.getProject());
         if(report.getStartDate() != null && report.getEndDate() != null) {
             startDate.setText(report.getStartDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -63,6 +67,16 @@ public class Reports {
         }
         tasksStatus.setText(ReportController.getInstance().tasksActive(ReportController.getInstance().getTasksOf(report)) +
                 " / " + ReportController.getInstance().tasksCompleted(ReportController.getInstance().getTasksOf(report)));
+    }
+
+    @FXML
+    private void resetReportTable() {
+        reportTable.getItems().clear();
+        String s = "-Not available-";
+        project.setText(s);
+        startDate.setText(s);
+        endDate.setText(s);
+        tasksStatus.setText(s);
     }
 
     @FXML
@@ -75,6 +89,7 @@ public class Reports {
     private void deleteReport() {
         Report report = ReportController.getInstance().getByName(reportList.getValue());
         ReportController.getInstance().delete(report);
+        resetReportTable();
         refresh();
     }
 }

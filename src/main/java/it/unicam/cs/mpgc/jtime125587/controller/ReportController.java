@@ -21,15 +21,15 @@ public class ReportController extends AbstractController<Report> {
     }
 
     public List<Task> getTasksOf(Report report) {
-        if(report != null) {
-            List<Task> tasks = TaskController.getInstance().getAll();
-            if(report.getProject() != null) tasks.removeIf(task -> !task.getProject().toString().equals(report.getProject()));
-            if(report.getStartDate() != null && report.getEndDate() != null) {
-                tasks.removeIf(task -> task.getDate().isBefore(report.getStartDate()) || task.getDate().isAfter(report.getEndDate()));
-            }
-            return tasks;
+        if(report == null) return List.of();
+        List<Task> tasks = TaskController.getInstance().getAll();
+        if(report.getProject() != null) {
+            tasks.removeIf(task -> !TaskController.getInstance().getProjOf(task).equals(report.getProject()));
         }
-        return List.of();
+        if(report.getStartDate() != null && report.getEndDate() != null) {
+            tasks.removeIf(task -> task.getDate().isBefore(report.getStartDate()) || task.getDate().isAfter(report.getEndDate()));
+        }
+        return tasks;
     }
 
     public String tasksActive(@NonNull List<Task> tasks) {

@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.jtime125587.controller;
 
 import it.unicam.cs.mpgc.jtime125587.model.Report;
+import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import lombok.Getter;
 import lombok.NonNull;
@@ -23,10 +24,18 @@ public class ReportController extends AbstractController<Report> {
 
     public List<Task> getTasksOf(@NonNull Report report) {
         return HibernateUtil.doInSess(session -> session.createQuery("from Task where project = :project " +
-                        "and date >= :startDate and date <= :endDate", Task.class)
+                        "or date >= :startDate and date <= :endDate", Task.class)
                 .setParameter("project", report.getProject())
                 .setParameter("startDate", report.getStartDate())
                 .setParameter("endDate", report.getEndDate())
                 .getResultList());
+    }
+
+    public String tasksActive(@NonNull List<Task> tasks) {
+        return String.valueOf(tasks.stream().filter(task -> task.getStatus() == Status.ACTIVE).count());
+    }
+
+    public String tasksCompleted(@NonNull List<Task> tasks) {
+        return String.valueOf(tasks.stream().filter(task -> task.getStatus() == Status.COMPLETED).count());
     }
 }

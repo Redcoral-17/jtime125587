@@ -25,6 +25,8 @@ public class Reports {
     @FXML
     private Label endDate;
     @FXML
+    private Label tasksStatus;
+    @FXML
     private TableView<Task> taskOfRepoList;
     @FXML
     private TableColumn<Task, String> date;
@@ -40,6 +42,8 @@ public class Reports {
             project.setText(report.getProject().getName());
             startDate.setText(report.getStartDate().toString());
             endDate.setText(report.getEndDate().toString());
+            tasksStatus.setText(ReportController.getInstance().tasksActive(ReportController.getInstance().getTasksOf(report)) +
+                    " / " + ReportController.getInstance().tasksCompleted(ReportController.getInstance().getTasksOf(report)));
         });
     }
 

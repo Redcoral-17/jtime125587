@@ -2,7 +2,6 @@ package it.unicam.cs.mpgc.jtime125587.view;
 
 import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
 import it.unicam.cs.mpgc.jtime125587.controller.ReportController;
-import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Report;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,8 +33,7 @@ public class AddReport {
         Button button = (Button) addReport.lookupButton(okButton);
         button.addEventFilter(ActionEvent.ACTION, event -> {
             if(check()) {  event.consume(); return; }
-            Project p = ProjectController.getInstance().getByName(project.getValue());
-            ReportController.getInstance().add(new Report(name.getText(), p, start.getValue(), end.getValue()));
+            ReportController.getInstance().add(new Report(name.getText(), project.getValue(), start.getValue(), end.getValue()));
         });
     }
 

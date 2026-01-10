@@ -42,7 +42,6 @@ public class Calendar {
         end.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getEndTime().format(DateTimeFormatter.ofPattern("HH:mm"))));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        refresh();
     }
 
     public void refresh() {

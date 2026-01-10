@@ -14,21 +14,22 @@ public class ReportController extends AbstractController<Report> {
 
     private ReportController(Class<Report> entityClass) { super(entityClass); }
 
-    public List<String> getAllRepoNames() {
-        return getAll().stream().map(Report::getName).toList();
-    }
+    public List<String> getAllRepoNames() { return getAll().stream().map(Report::getName).toList(); }
 
     public Report getByName(String name) {
         return getAll().stream().filter(report -> report.getName().equals(name)).findFirst().orElse(null);
     }
 
-    public List<Task> getTasksOf(@NonNull Report report) {
-        return HibernateUtil.doInSess(session -> session.createQuery("from Task where project = :project " +
-                        "or date >= :startDate and date <= :endDate", Task.class)
-                .setParameter("project", report.getProject())
-                .setParameter("startDate", report.getStartDate())
-                .setParameter("endDate", report.getEndDate())
-                .getResultList());
+    public List<Task> getTasksOf(Report report) {
+        if(report != null) {
+            List<Task> tasks = TaskController.getInstance().getAll();
+            if(report.getProject() != null) tasks.removeIf(task -> !task.getProject().toString().equals(report.getProject()));
+            if(report.getStartDate() != null && report.getEndDate() != null) {
+                tasks.removeIf(task -> task.getDate().isBefore(report.getStartDate()) || task.getDate().isAfter(report.getEndDate()));
+            }
+            return tasks;
+        }
+        return List.of();
     }
 
     public String tasksActive(@NonNull List<Task> tasks) {
@@ -37,5 +38,10 @@ public class ReportController extends AbstractController<Report> {
 
     public String tasksCompleted(@NonNull List<Task> tasks) {
         return String.valueOf(tasks.stream().filter(task -> task.getStatus() == Status.COMPLETED).count());
+    }
+
+    public String getDifDurOf(@NonNull Task task) {
+        if(task.getOldDuration() != null) return task.getDuration().minus(task.getOldDuration()).toMinutes() + " m";
+        return "-Not available-";
     }
 }

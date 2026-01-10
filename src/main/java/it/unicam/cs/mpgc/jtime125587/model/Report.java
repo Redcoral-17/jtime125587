@@ -17,13 +17,11 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
+    private String project;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Report(String name, Project project, LocalDate startDate, LocalDate endDate) {
+    public Report(String name, String project, LocalDate startDate, LocalDate endDate) {
         this.name = name;
         this.project = project;
         this.startDate = startDate;

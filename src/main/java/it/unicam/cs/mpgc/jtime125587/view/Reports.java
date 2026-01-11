@@ -42,7 +42,10 @@ public class Reports {
 
     public void initialize() {
         refresh();
-        reportList.valueProperty().addListener((obs, oldReport, newReport) -> setReportTable());
+        reportList.valueProperty().addListener((obs, oldReport, newReport) -> {
+            resetReportTable();
+            setReportTable();
+        });
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         date.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));

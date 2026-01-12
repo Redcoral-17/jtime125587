@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Getter
 @NoArgsConstructor
@@ -17,13 +15,11 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
-    private List<Task> tasks;
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     public Project(String name) {
         this.name = name;
-        this.tasks = List.of();
         this.status = Status.ACTIVE;
     }
 }

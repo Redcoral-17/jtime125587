@@ -44,7 +44,7 @@ public class AddTask {
             if(check()) {  event.consume(); return; }
             Project selectedProject = projectController.getAll().stream().filter(project ->
                     project.getName().equals(this.project.getValue())).findFirst().orElse(null);
-            taskController.add(new Task(name.getText(), selectedProject, date.getValue(), start.getValue(), end.getValue()));
+            taskController.add(new Task(name.getText(), date.getValue(), start.getValue(), end.getValue(), selectedProject));
         });
     }
 

@@ -2,9 +2,7 @@ package it.unicam.cs.mpgc.jtime125587.view;
 
 import it.unicam.cs.mpgc.jtime125587.controller.Controller;
 import it.unicam.cs.mpgc.jtime125587.controller.HibernateController;
-import it.unicam.cs.mpgc.jtime125587.model.Report;
-import it.unicam.cs.mpgc.jtime125587.model.Status;
-import it.unicam.cs.mpgc.jtime125587.model.Task;
+import it.unicam.cs.mpgc.jtime125587.model.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -15,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 import static it.unicam.cs.mpgc.jtime125587.view.Main.openDialog;
 import static javafx.collections.FXCollections.observableList;
@@ -68,16 +65,16 @@ public class Reports {
     @FXML
     private void setReportTable() {
         Report selectedReport = reportController.getAll().stream().filter(report ->
-                Objects.equals(report.getName(), reportList.getValue())).findFirst().orElse(null);
+                report.getName().equals(this.reportList.getValue())).findFirst().orElse(null);
         if(selectedReport == null) return;
-        reportTable.setItems(observableList(selectedReport.getTasks()));
-        if(selectedReport.getProject() != null) project.setText(selectedReport.getProject().getName());
+        reportTable.setItems(observableList(reportController.getTasks(selectedReport)));
+        if(selectedReport.getProject() != null) project.setText(selectedReport.getProject());
         if(selectedReport.getStartDate() != null && selectedReport.getEndDate() != null) {
             startDate.setText(selectedReport.getStartDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             endDate.setText(selectedReport.getEndDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
-        tasksStatus.setText(selectedReport.getTasks().stream().filter(task -> task.getStatus() == Status.ACTIVE).count() +
-                " / " + selectedReport.getTasks().stream().filter(task -> task.getStatus() == Status.COMPLETED).count());
+        tasksStatus.setText(reportController.getTasks(selectedReport).stream().filter(task -> task.getStatus() == Status.ACTIVE).count() +
+                " / " + reportController.getTasks(selectedReport).stream().filter(task -> task.getStatus() == Status.COMPLETED).count());
     }
 
     @FXML

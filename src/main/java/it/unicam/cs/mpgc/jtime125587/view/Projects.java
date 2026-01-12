@@ -37,17 +37,17 @@ public class Projects {
     public void initialize() {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         start.setCellValueFactory(cellData -> {
-            LocalDate date = cellData.getValue().getTasks().stream().map(Task::getDate).min(LocalDate::compareTo).orElse(null);
+            LocalDate date = projectController.getTasks(cellData.getValue()).stream().map(Task::getDate).min(LocalDate::compareTo).orElse(null);
             if(date != null) return new SimpleObjectProperty<>(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             return new SimpleObjectProperty<>("-Not available-");
         });
         end.setCellValueFactory(cellData -> {
-            LocalDate date = cellData.getValue().getTasks().stream().map(Task::getDate).min(LocalDate::compareTo).orElse(null);
+            LocalDate date = projectController.getTasks(cellData.getValue()).stream().map(Task::getDate).min(LocalDate::compareTo).orElse(null);
             if(date != null) return new SimpleObjectProperty<>(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             return new SimpleObjectProperty<>("-Not available-");
         });
         duration.setCellValueFactory(cellData -> {
-            Duration duration = cellData.getValue().getTasks().stream().map(Task::getDuration).reduce(Duration.ZERO, Duration::plus);
+            Duration duration = projectController.getTasks(cellData.getValue()).stream().map(Task::getDuration).reduce(Duration.ZERO, Duration::plus);
             if(duration != null) return new SimpleObjectProperty<>(duration.toHours() + " h " + (duration.toMinutesPart()) + " m");
             return new SimpleObjectProperty<>("-Not available-");
         });
@@ -68,7 +68,7 @@ public class Projects {
     @FXML
     private void endProject() {
         Project project = projectList.getSelectionModel().getSelectedItem();
-        if(project != null && project.getTasks().stream().allMatch(task -> task.getStatus() == Status.COMPLETED)) {
+        if(project != null && projectController.getTasks(project).stream().allMatch(task -> task.getStatus() == Status.COMPLETED)) {
             project.setStatus(Status.COMPLETED);
             projectController.update(project);
             refresh();
@@ -78,7 +78,7 @@ public class Projects {
     @FXML
     private void deleteProject() {
         Project project = projectList.getSelectionModel().getSelectedItem();
-        if(project != null && project.getTasks().isEmpty()) {
+        if(project != null && projectController.getTasks(project).isEmpty()) {
             projectController.delete(project);
             refresh();
         }

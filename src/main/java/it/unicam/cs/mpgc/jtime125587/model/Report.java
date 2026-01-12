@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
@@ -18,19 +17,14 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
-    @OneToMany(mappedBy = "report", fetch = FetchType.EAGER)
-    private List<Task> tasks;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String project;
 
-    public Report(String name, Project project, List<Task> tasks, LocalDate startDate, LocalDate endDate) {
+    public Report(String name, LocalDate startDate, LocalDate endDate, String project) {
         this.name = name;
-        this.project = project;
-        this.tasks = tasks;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.project = project;
     }
 }

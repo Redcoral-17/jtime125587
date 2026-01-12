@@ -24,15 +24,13 @@ public class Task {
     private LocalTime endTime;
     private Duration oldDuration;
     private Duration duration;
+    @Enumerated(EnumType.STRING)
     private Status status;
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
-    @ManyToOne
-    @JoinColumn(name = "report_id")
-    private Report report;
 
-    public Task(String name, Project project, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public Task(String name, LocalDate date, LocalTime startTime, LocalTime endTime, Project project) {
         this.name = name;
         this.date = date;
         this.startTime = startTime;
@@ -41,6 +39,5 @@ public class Task {
         this.duration = Duration.between(startTime, endTime);
         this.status = Status.ACTIVE;
         this.project = project;
-        this.report = null;
     }
 }

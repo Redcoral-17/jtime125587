@@ -67,17 +67,17 @@ public class Reports {
 
     @FXML
     private void setReportTable() {
-        Report r = reportController.getAll().stream().filter(report ->
+        Report selectedReport = reportController.getAll().stream().filter(report ->
                 Objects.equals(report.getName(), reportList.getValue())).findFirst().orElse(null);
-        if(r == null) return;
-        reportTable.setItems(observableList(r.getTasks()));
-        if(r.getProject() != null) project.setText(r.getProject());
-        if(r.getStartDate() != null && r.getEndDate() != null) {
-            startDate.setText(r.getStartDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            endDate.setText(r.getEndDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        if(selectedReport == null) return;
+        reportTable.setItems(observableList(selectedReport.getTasks()));
+        if(selectedReport.getProject() != null) project.setText(selectedReport.getProject().getName());
+        if(selectedReport.getStartDate() != null && selectedReport.getEndDate() != null) {
+            startDate.setText(selectedReport.getStartDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            endDate.setText(selectedReport.getEndDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
-        tasksStatus.setText(r.getTasks().stream().filter(task -> task.getStatus() == Status.ACTIVE).count() +
-                " / " + r.getTasks().stream().filter(task -> task.getStatus() == Status.COMPLETED).count());
+        tasksStatus.setText(selectedReport.getTasks().stream().filter(task -> task.getStatus() == Status.ACTIVE).count() +
+                " / " + selectedReport.getTasks().stream().filter(task -> task.getStatus() == Status.COMPLETED).count());
     }
 
     @FXML
@@ -98,9 +98,9 @@ public class Reports {
 
     @FXML
     private void deleteReport() {
-        Report r = reportController.getAll().stream().filter(report ->
+        Report selectedReport = reportController.getAll().stream().filter(report ->
                 report.getName().equals(this.reportList.getValue())).findFirst().orElse(null);
-        reportController.delete(r);
+        reportController.delete(selectedReport);
         resetReportTable();
         refresh();
     }

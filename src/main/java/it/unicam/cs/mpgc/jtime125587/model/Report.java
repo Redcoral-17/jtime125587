@@ -18,13 +18,15 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String project;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
     @OneToMany(mappedBy = "report", fetch = FetchType.EAGER)
     private List<Task> tasks;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Report(String name, String project, List<Task> tasks, LocalDate startDate, LocalDate endDate) {
+    public Report(String name, Project project, List<Task> tasks, LocalDate startDate, LocalDate endDate) {
         this.name = name;
         this.project = project;
         this.tasks = tasks;

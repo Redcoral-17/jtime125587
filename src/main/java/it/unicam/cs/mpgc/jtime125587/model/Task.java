@@ -19,9 +19,6 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -29,17 +26,21 @@ public class Task {
     private Duration duration;
     private Status status;
     @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+    @ManyToOne
     @JoinColumn(name = "report_id")
     private Report report;
 
     public Task(String name, Project project, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.name = name;
-        this.project = project;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.oldDuration = Duration.ZERO;
         this.duration = Duration.between(startTime, endTime);
         this.status = Status.ACTIVE;
+        this.project = project;
+        this.report = null;
     }
 }

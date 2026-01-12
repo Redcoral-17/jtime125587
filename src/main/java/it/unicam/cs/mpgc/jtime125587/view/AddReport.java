@@ -8,15 +8,16 @@ import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import static it.unicam.cs.mpgc.jtime125587.view.Main.showError;
 import static javafx.collections.FXCollections.observableList;
 
 public class AddReport {
+    private Project selectedProject;
     private final Controller<Task> taskController = new HibernateController<>(Task.class);
     private final Controller<Project> projectController = new HibernateController<>(Project.class);
     private final Controller<Report> reportController = new HibernateController<>(Report.class);
@@ -40,14 +41,16 @@ public class AddReport {
         Button button = (Button) addReport.lookupButton(okButton);
         button.addEventFilter(ActionEvent.ACTION, event -> {
             if(check()) {  event.consume(); return; }
-            reportController.add(new Report(name.getText(), project.getValue(), getSelectedTasks(), start.getValue(), end.getValue()));
+            selectedProject = projectController.getAll().stream().filter(project ->
+                    project.getName().equals(this.project.getValue())).findFirst().orElse(null);
+            reportController.add(new Report(name.getText(), selectedProject, getSelectedTasks(), start.getValue(), end.getValue()));
         });
     }
 
-    private List<Task> getSelectedTasks() {
+    private @NonNull List<Task> getSelectedTasks() {
         List<Task> tasks = taskController.getAll();
         if(project.getValue() != null) {
-            tasks.removeIf(task -> !Objects.equals(task.getProject().getName(), project.getValue()));
+            tasks.removeIf(task -> !task.getProject().equals(selectedProject));
         }
         if(start.getValue() != null && end.getValue() != null) {
             tasks.removeIf(task -> task.getDate().isBefore(start.getValue()) || task.getDate().isAfter(end.getValue()));

@@ -42,9 +42,9 @@ public class AddTask {
         Button button = (Button) addTask.lookupButton(okButton);
         button.addEventFilter(ActionEvent.ACTION, event -> {
             if(check()) {  event.consume(); return; }
-            Project p = projectController.getAll().stream().filter(project ->
+            Project selectedProject = projectController.getAll().stream().filter(project ->
                     project.getName().equals(this.project.getValue())).findFirst().orElse(null);
-            taskController.add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
+            taskController.add(new Task(name.getText(), selectedProject, date.getValue(), start.getValue(), end.getValue()));
         });
     }
 

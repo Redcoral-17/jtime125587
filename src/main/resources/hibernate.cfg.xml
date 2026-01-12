@@ -18,6 +18,6 @@
         <!-- List of mapped classes -->
         <mapping class="it.unicam.cs.mpgc.jtime125587.model.Project"/>
         <mapping class="it.unicam.cs.mpgc.jtime125587.model.Report"/>
-        <mapping class="it.unicam.cs.mpgc.jtime125587.model.Task"/>
+        <mapping class="it.unicam.cs.mpgc.jtime125587.model.AbstractTask"/>
     </session-factory>
 </hibernate-configuration>

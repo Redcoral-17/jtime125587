@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.jtime125587.view;
 
 import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
-import it.unicam.cs.mpgc.jtime125587.model.Task;
+import it.unicam.cs.mpgc.jtime125587.model.AbstractTask;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 import static it.unicam.cs.mpgc.jtime125587.view.Main.showError;
 
 public class EndTask {
-    private Task task;
+    private AbstractTask task;
     @FXML
     private DialogPane endTask;
     @FXML
@@ -42,7 +42,7 @@ public class EndTask {
         if(task != null) setTask(task);
     }
 
-    public void setTask(@NonNull Task task) {
+    public void setTask(@NonNull AbstractTask task) {
         this.task = task;
         name.setText(task.getName());
         project.setText(TaskController.getInstance().getProjOf(task));
@@ -51,7 +51,7 @@ public class EndTask {
         end.setValue(task.getEndTime());
     }
 
-    private Task taskUpdated() {
+    private AbstractTask taskUpdated() {
         task.setOldDuration(task.getDuration());
         task.setStartTime(start.getValue());
         task.setEndTime(end.getValue());

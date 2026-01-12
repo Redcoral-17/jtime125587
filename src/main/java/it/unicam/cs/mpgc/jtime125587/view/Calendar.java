@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.jtime125587.view;
 
 import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
-import it.unicam.cs.mpgc.jtime125587.model.Task;
+import it.unicam.cs.mpgc.jtime125587.model.AbstractTask;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,17 +19,17 @@ public class Calendar {
     @FXML
     private DatePicker date;
     @FXML
-    private TableView<Task> taskList;
+    private TableView<AbstractTask> taskList;
     @FXML
-    private TableColumn<Task, String> name;
+    private TableColumn<AbstractTask, String> name;
     @FXML
-    private TableColumn<Task, String> project;
+    private TableColumn<AbstractTask, String> project;
     @FXML
-    private TableColumn<Task, String> start;
+    private TableColumn<AbstractTask, String> start;
     @FXML
-    private TableColumn<Task, String> end;
+    private TableColumn<AbstractTask, String> end;
     @FXML
-    private TableColumn<Task, Status> status;
+    private TableColumn<AbstractTask, Status> status;
 
     public void initialize() {
         date.setValue(LocalDate.now());
@@ -56,7 +56,7 @@ public class Calendar {
 
     @FXML
     private void openEndTask() throws IOException {
-        Task task = taskList.getSelectionModel().getSelectedItem();
+        AbstractTask task = taskList.getSelectionModel().getSelectedItem();
         if(task != null && task.getStatus() == Status.ACTIVE) {
             openDialog("/it/unicam/cs/mpgc/jtime125587/EndTask.fxml", "End Task", task);
             refresh();
@@ -65,7 +65,7 @@ public class Calendar {
 
     @FXML
     private void deleteTask() {
-        Task task = taskList.getSelectionModel().getSelectedItem();
+        AbstractTask task = taskList.getSelectionModel().getSelectedItem();
         if(task != null && task.getStatus() == Status.ACTIVE) {
             TaskController.getInstance().delete(task);
             refresh();

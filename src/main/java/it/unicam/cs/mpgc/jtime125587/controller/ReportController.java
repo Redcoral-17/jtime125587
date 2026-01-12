@@ -2,27 +2,21 @@ package it.unicam.cs.mpgc.jtime125587.controller;
 
 import it.unicam.cs.mpgc.jtime125587.model.Report;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
-import it.unicam.cs.mpgc.jtime125587.model.Task;
+import it.unicam.cs.mpgc.jtime125587.model.AbstractTask;
 import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.List;
 
-public class ReportController extends AbstractController<Report> {
+public class ReportController {
     @Getter
     private static final ReportController instance = new ReportController(Report.class);
 
     private ReportController(Class<Report> entityClass) { super(entityClass); }
 
-    public List<String> getAllRepoNames() { return getAll().stream().map(Report::getName).toList(); }
-
-    public Report getByName(String name) {
-        return getAll().stream().filter(report -> report.getName().equals(name)).findFirst().orElse(null);
-    }
-
-    public List<Task> getTasksOf(Report report) {
+    public List<AbstractTask> getTasksOf(Report report) {
         if(report == null) return List.of();
-        List<Task> tasks = TaskController.getInstance().getAll();
+        List<AbstractTask> tasks = TaskController.getInstance().getAll();
         if(report.getProject() != null) {
             tasks.removeIf(task -> !TaskController.getInstance().getProjOf(task).equals(report.getProject()));
         }
@@ -32,15 +26,15 @@ public class ReportController extends AbstractController<Report> {
         return tasks;
     }
 
-    public String tasksActive(@NonNull List<Task> tasks) {
+    public String tasksActive(@NonNull List<AbstractTask> tasks) {
         return String.valueOf(tasks.stream().filter(task -> task.getStatus() == Status.ACTIVE).count());
     }
 
-    public String tasksCompleted(@NonNull List<Task> tasks) {
+    public String tasksCompleted(@NonNull List<AbstractTask> tasks) {
         return String.valueOf(tasks.stream().filter(task -> task.getStatus() == Status.COMPLETED).count());
     }
 
-    public String getDifDurOf(@NonNull Task task) {
+    public String getDifDurOf(@NonNull AbstractTask task) {
         if(task.getOldDuration() != null) return task.getDuration().minus(task.getOldDuration()).toMinutes() + " m";
         return "-Not available-";
     }

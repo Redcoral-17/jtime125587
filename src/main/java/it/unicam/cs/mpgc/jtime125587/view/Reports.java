@@ -1,9 +1,11 @@
 package it.unicam.cs.mpgc.jtime125587.view;
 
+import it.unicam.cs.mpgc.jtime125587.controller.Controller;
+import it.unicam.cs.mpgc.jtime125587.controller.HibernateController;
 import it.unicam.cs.mpgc.jtime125587.controller.ReportController;
 import it.unicam.cs.mpgc.jtime125587.model.Report;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
-import it.unicam.cs.mpgc.jtime125587.model.Task;
+import it.unicam.cs.mpgc.jtime125587.model.AbstractTask;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -19,6 +21,7 @@ import static it.unicam.cs.mpgc.jtime125587.view.Main.openDialog;
 import static javafx.collections.FXCollections.observableList;
 
 public class Reports {
+    private final Controller<Report> controller = new HibernateController<>(Report.class);
     @FXML
     private ComboBox<String> reportList;
     @FXML
@@ -30,15 +33,15 @@ public class Reports {
     @FXML
     private Label tasksStatus;
     @FXML
-    private TableView<Task> reportTable;
+    private TableView<AbstractTask> reportTable;
     @FXML
-    private TableColumn<Task, String> name;
+    private TableColumn<AbstractTask, String> name;
     @FXML
-    private TableColumn<Task, String> date;
+    private TableColumn<AbstractTask, String> date;
     @FXML
-    private TableColumn<Task, Status> status;
+    private TableColumn<AbstractTask, Status> status;
     @FXML
-    private TableColumn<Task, String> duration;
+    private TableColumn<AbstractTask, String> duration;
 
     public void initialize() {
         refresh();
@@ -55,7 +58,7 @@ public class Reports {
     }
 
     public void refresh() {
-        reportList.setItems(observableList(ReportController.getInstance().getAllRepoNames()));
+        reportList.setItems(observableList(controller.getAll().stream().map(Report::getName).toList()));
     }
 
     @FXML

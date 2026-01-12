@@ -1,7 +1,9 @@
 package it.unicam.cs.mpgc.jtime125587.view;
 
-import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
+import it.unicam.cs.mpgc.jtime125587.controller.Controller;
+import it.unicam.cs.mpgc.jtime125587.controller.HibernateController;
 import it.unicam.cs.mpgc.jtime125587.controller.ReportController;
+import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Report;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import static it.unicam.cs.mpgc.jtime125587.view.Main.showError;
 import static javafx.collections.FXCollections.observableList;
 
 public class AddReport {
+    private final Controller<Project> controller = new HibernateController<>(Project.class);
     @FXML
     private DialogPane addReport;
     @FXML
@@ -27,13 +30,17 @@ public class AddReport {
     private ButtonType okButton;
 
     public void initialize() {
-        project.setItems(observableList(ProjectController.getInstance().getAllProjNames()));
+        project.setItems(observableList(controller.getAll().stream().map(Project::getName).toList()));
         start.setValue(LocalDate.now());
         end.setValue(LocalDate.now().plusDays(7));
         Button button = (Button) addReport.lookupButton(okButton);
         button.addEventFilter(ActionEvent.ACTION, event -> {
             if(check()) {  event.consume(); return; }
-            ReportController.getInstance().add(new Report(name.getText(), project.getValue(), start.getValue(), end.getValue()));
+            ReportController.getInstance().add(new Report(
+                    name.getText(),
+                    project.getValue(),
+
+                    start.getValue(), end.getValue()));
         });
     }
 

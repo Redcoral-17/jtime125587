@@ -35,7 +35,7 @@ public class Task {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.oldDuration = null;
+        this.oldDuration = Duration.ZERO;
         this.duration = Duration.between(startTime, endTime);
         this.status = Status.ACTIVE;
     }

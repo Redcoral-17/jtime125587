@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,11 +19,12 @@ public class Report {
     private Long id;
     private String name;
     private String project;
-    private Set<AbstractTask> tasks;
+    @OneToMany(mappedBy = "report", fetch = FetchType.EAGER)
+    private List<Task> tasks;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Report(String name, String project, Set<AbstractTask> tasks, LocalDate startDate, LocalDate endDate) {
+    public Report(String name, String project, List<Task> tasks, LocalDate startDate, LocalDate endDate) {
         this.name = name;
         this.project = project;
         this.tasks = tasks;

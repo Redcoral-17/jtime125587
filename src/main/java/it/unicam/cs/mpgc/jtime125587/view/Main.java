@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.jtime125587.view;
 
-import it.unicam.cs.mpgc.jtime125587.model.AbstractTask;
+import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -28,7 +28,7 @@ public class Main {
         });
     }
 
-    public static void openDialog(String fxmlFile, String title, AbstractTask task) throws IOException {
+    public static void openDialog(String fxmlFile, String title, Task task) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle(title);

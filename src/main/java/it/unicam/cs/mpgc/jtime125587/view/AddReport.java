@@ -2,20 +2,24 @@ package it.unicam.cs.mpgc.jtime125587.view;
 
 import it.unicam.cs.mpgc.jtime125587.controller.Controller;
 import it.unicam.cs.mpgc.jtime125587.controller.HibernateController;
-import it.unicam.cs.mpgc.jtime125587.controller.ReportController;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Report;
+import it.unicam.cs.mpgc.jtime125587.model.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 import static it.unicam.cs.mpgc.jtime125587.view.Main.showError;
 import static javafx.collections.FXCollections.observableList;
 
 public class AddReport {
-    private final Controller<Project> controller = new HibernateController<>(Project.class);
+    private final Controller<Task> taskController = new HibernateController<>(Task.class);
+    private final Controller<Project> projectController = new HibernateController<>(Project.class);
+    private final Controller<Report> reportController = new HibernateController<>(Report.class);
     @FXML
     private DialogPane addReport;
     @FXML
@@ -30,20 +34,26 @@ public class AddReport {
     private ButtonType okButton;
 
     public void initialize() {
-        project.setItems(observableList(controller.getAll().stream().map(Project::getName).toList()));
+        project.setItems(observableList(projectController.getAll().stream().map(Project::getName).toList()));
         start.setValue(LocalDate.now());
         end.setValue(LocalDate.now().plusDays(7));
         Button button = (Button) addReport.lookupButton(okButton);
         button.addEventFilter(ActionEvent.ACTION, event -> {
             if(check()) {  event.consume(); return; }
-            ReportController.getInstance().add(new Report(
-                    name.getText(),
-                    project.getValue(),
-
-                    start.getValue(), end.getValue()));
+            reportController.add(new Report(name.getText(), project.getValue(), getSelectedTasks(), start.getValue(), end.getValue()));
         });
     }
 
+    private List<Task> getSelectedTasks() {
+        List<Task> tasks = taskController.getAll();
+        if(project.getValue() != null) {
+            tasks.removeIf(task -> !Objects.equals(task.getProject().getName(), project.getValue()));
+        }
+        if(start.getValue() != null && end.getValue() != null) {
+            tasks.removeIf(task -> task.getDate().isBefore(start.getValue()) || task.getDate().isAfter(end.getValue()));
+        }
+        return tasks;
+    }
     private boolean check() {
         if(name.getText().isBlank()) { showError("Name cannot be empty"); return true; }
         if(start.getValue() != null && end.getValue() != null) {

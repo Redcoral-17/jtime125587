@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.jtime125587.view;
 
-import it.unicam.cs.mpgc.jtime125587.controller.ProjectController;
-import it.unicam.cs.mpgc.jtime125587.controller.TaskController;
+import it.unicam.cs.mpgc.jtime125587.controller.Controller;
+import it.unicam.cs.mpgc.jtime125587.controller.HibernateController;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
@@ -16,6 +16,8 @@ import static it.unicam.cs.mpgc.jtime125587.view.Main.showError;
 import static javafx.collections.FXCollections.observableList;
 
 public class AddTask {
+    private final Controller<Task> taskController = new HibernateController<>(Task.class);
+    private final Controller<Project> projectController = new HibernateController<>(Project.class);
     @FXML
     private DialogPane addTask;
     @FXML
@@ -32,15 +34,17 @@ public class AddTask {
     private ButtonType okButton;
 
     public void initialize() {
-        project.setItems(observableList(ProjectController.getInstance().getActiveProjNames()));
+        project.setItems(observableList(projectController.getAll().stream().filter(project ->
+                project.getStatus() == Status.ACTIVE).map(Project::getName).toList()));
         date.setValue(LocalDate.now());
         Main.setComboBox(start);
         Main.setComboBox(end);
         Button button = (Button) addTask.lookupButton(okButton);
         button.addEventFilter(ActionEvent.ACTION, event -> {
             if(check()) {  event.consume(); return; }
-            Project p = ProjectController.getInstance().getByName(project.getValue());
-            TaskController.getInstance().add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
+            Project p = projectController.getAll().stream().filter(project ->
+                    project.getName().equals(this.project.getValue())).findFirst().orElse(null);
+            taskController.add(new Task(name.getText(), p, date.getValue(), start.getValue(), end.getValue()));
         });
     }
 
@@ -50,10 +54,13 @@ public class AddTask {
         if(start.getValue() == null) { showError("Start time cannot be empty"); return true; }
         if(end.getValue() == null) { showError("End time cannot be empty"); return true; }
         if(start.getValue().isAfter(end.getValue())) { showError("Start time cannot be after end time"); return true; }
-        if(TaskController.getInstance().checkFreeTime(Status.ACTIVE, start.getValue(), end.getValue(), date.getValue())) {
-            showError("There is already a task scheduled in this time range");
-            return true;
-        }
+        if(checkFreeTime()) { showError("There is already a task scheduled in this time range"); return true; }
         return false;
+    }
+
+    private boolean checkFreeTime() {
+        return taskController.getAll().stream().filter(task ->
+                task.getDate().equals(date.getValue())).anyMatch(task -> task.getStatus() == Status.ACTIVE
+                && start.getValue().isBefore(task.getEndTime()) && task.getStartTime().isBefore(end.getValue()));
     }
 }

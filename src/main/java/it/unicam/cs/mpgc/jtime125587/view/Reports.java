@@ -13,11 +13,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static it.unicam.cs.mpgc.jtime125587.view.Main.openDialog;
 import static javafx.collections.FXCollections.observableList;
 
 public class Reports {
+    private final Controller<Task> taskController = new HibernateController<>(Task.class);
     private final Controller<Report> reportController = new HibernateController<>(Report.class);
     @FXML
     private ComboBox<String> reportList;
@@ -43,7 +46,7 @@ public class Reports {
     public void initialize() {
         reportList.valueProperty().addListener((obs, oldReport, newReport) -> {
             resetReportTable();
-            setReportTable();
+            if(newReport != null) setReportTable();
         });
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         date.setCellValueFactory(cellData ->
@@ -62,24 +65,39 @@ public class Reports {
         reportList.setItems(observableList(reportController.getAll().stream().map(Report::getName).toList()));
     }
 
+    private Stream<Task> getTasksOf(Report report) {
+        if(report == null) return Stream.empty();
+        return taskController.getAll().stream().filter(task -> {
+               if(report.getProject() != null) {
+                   if(task.getProject() != null) return task.getProject().getName().equals(report.getProject());
+               }
+               if(report.getStartDate() != null && report.getEndDate() != null) {
+                   return !task.getDate().isBefore(report.getStartDate()) && !task.getDate().isAfter(report.getEndDate());
+               }
+               return false;
+        });
+    }
+
     @FXML
     private void setReportTable() {
         Report selectedReport = reportController.getAll().stream().filter(report ->
                 report.getName().equals(this.reportList.getValue())).findFirst().orElse(null);
         if(selectedReport == null) return;
-        reportTable.setItems(observableList(reportController.getTasks(selectedReport)));
-        if(selectedReport.getProject() != null) project.setText(selectedReport.getProject());
+        reportTable.setItems(observableList(getTasksOf(selectedReport).toList()));
+        if(selectedReport.getProject() != null) {
+            project.setText(selectedReport.getProject());
+        }
         if(selectedReport.getStartDate() != null && selectedReport.getEndDate() != null) {
             startDate.setText(selectedReport.getStartDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             endDate.setText(selectedReport.getEndDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
-        tasksStatus.setText(reportController.getTasks(selectedReport).stream().filter(task -> task.getStatus() == Status.ACTIVE).count() +
-                " / " + reportController.getTasks(selectedReport).stream().filter(task -> task.getStatus() == Status.COMPLETED).count());
+        tasksStatus.setText(getTasksOf(selectedReport).filter(task -> task.getStatus() == Status.ACTIVE).count() +
+                " / " + getTasksOf(selectedReport).filter(task -> task.getStatus() == Status.COMPLETED).count());
     }
 
     @FXML
     private void resetReportTable() {
-        reportTable.getItems().clear();
+        reportTable.setItems(observableList(List.of()));
         String s = "-Not available-";
         project.setText(s);
         startDate.setText(s);
@@ -97,8 +115,10 @@ public class Reports {
     private void deleteReport() {
         Report selectedReport = reportController.getAll().stream().filter(report ->
                 report.getName().equals(this.reportList.getValue())).findFirst().orElse(null);
-        reportController.delete(selectedReport);
-        resetReportTable();
-        refresh();
+        if(selectedReport != null) {
+            reportController.delete(selectedReport);
+            resetReportTable();
+            refresh();
+        }
     }
 }

@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.jtime125587.controller;
 
-import it.unicam.cs.mpgc.jtime125587.model.Task;
 import lombok.NonNull;
 
 import java.util.List;
@@ -26,11 +25,5 @@ public class HibernateController<T> implements Controller<T> {
     @Override
     public List<T> getAll() {
         return doInSess(session -> session.createQuery("from " + entityClass.getSimpleName(), entityClass).getResultList());
-    }
-
-    @Override
-    public List<Task> getTasks(T entity) {
-        return doInSess(session -> session.createQuery("from Task where id = :entityId", Task.class)
-                .setParameter("entityId", entity.hashCode()).getResultList());
     }
 }

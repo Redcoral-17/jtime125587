@@ -15,11 +15,13 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Stream;
 
 import static it.unicam.cs.mpgc.jtime125587.view.Main.openDialog;
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class Projects {
+    private final Controller<Task> taskController = new HibernateController<>(Task.class);
     private final Controller<Project> projectController = new HibernateController<>(Project.class);
     @FXML
     private TableView<Project> projectList;
@@ -37,18 +39,18 @@ public class Projects {
     public void initialize() {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         start.setCellValueFactory(cellData -> {
-            LocalDate date = projectController.getTasks(cellData.getValue()).stream().map(Task::getDate).min(LocalDate::compareTo).orElse(null);
+            LocalDate date = getTasksOf(cellData.getValue()).map(Task::getDate).min(LocalDate::compareTo).orElse(null);
             if(date != null) return new SimpleObjectProperty<>(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             return new SimpleObjectProperty<>("-Not available-");
         });
         end.setCellValueFactory(cellData -> {
-            LocalDate date = projectController.getTasks(cellData.getValue()).stream().map(Task::getDate).min(LocalDate::compareTo).orElse(null);
+            LocalDate date = getTasksOf(cellData.getValue()).map(Task::getDate).max(LocalDate::compareTo).orElse(null);
             if(date != null) return new SimpleObjectProperty<>(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             return new SimpleObjectProperty<>("-Not available-");
         });
         duration.setCellValueFactory(cellData -> {
-            Duration duration = projectController.getTasks(cellData.getValue()).stream().map(Task::getDuration).reduce(Duration.ZERO, Duration::plus);
-            if(duration != null) return new SimpleObjectProperty<>(duration.toHours() + " h " + (duration.toMinutesPart()) + " m");
+            Duration duration = getTasksOf(cellData.getValue()).map(Task::getDuration).reduce(Duration::plus).orElse(Duration.ZERO);
+            if(duration != Duration.ZERO) return new SimpleObjectProperty<>(duration.toHours() + " h " + (duration.toMinutesPart()) + " m");
             return new SimpleObjectProperty<>("-Not available-");
         });
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -57,6 +59,13 @@ public class Projects {
 
     public void refresh() {
         projectList.setItems(observableArrayList(projectController.getAll()));
+    }
+
+    private Stream<Task> getTasksOf(Project project) {
+        return taskController.getAll().stream().filter(task -> {
+            if(task.getProject() != null) return task.getProject().getId().equals(project.getId());
+            return false;
+        });
     }
 
     @FXML
@@ -68,7 +77,7 @@ public class Projects {
     @FXML
     private void endProject() {
         Project project = projectList.getSelectionModel().getSelectedItem();
-        if(project != null && projectController.getTasks(project).stream().allMatch(task -> task.getStatus() == Status.COMPLETED)) {
+        if(project != null && getTasksOf(project).allMatch(task -> task.getStatus() == Status.COMPLETED)) {
             project.setStatus(Status.COMPLETED);
             projectController.update(project);
             refresh();
@@ -78,7 +87,7 @@ public class Projects {
     @FXML
     private void deleteProject() {
         Project project = projectList.getSelectionModel().getSelectedItem();
-        if(project != null && projectController.getTasks(project).isEmpty()) {
+        if(project != null && getTasksOf(project).findAny().isEmpty()) {
             projectController.delete(project);
             refresh();
         }

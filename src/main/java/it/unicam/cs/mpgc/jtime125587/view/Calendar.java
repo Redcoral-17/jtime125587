@@ -58,7 +58,7 @@ public class Calendar {
 
     @FXML
     private void openAddTask() throws IOException {
-        openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task.java", null);
+        openDialog("/it/unicam/cs/mpgc/jtime125587/AddTask.fxml", "Add Task", null);
         refresh();
     }
 
@@ -66,7 +66,7 @@ public class Calendar {
     private void openEndTask() throws IOException {
         Task task = taskList.getSelectionModel().getSelectedItem();
         if(task != null && task.getStatus() == Status.ACTIVE) {
-            openDialog("/it/unicam/cs/mpgc/jtime125587/EndTask.fxml", "End Task.java", task);
+            openDialog("/it/unicam/cs/mpgc/jtime125587/EndTask.fxml", "End Task", task);
             refresh();
         }
     }

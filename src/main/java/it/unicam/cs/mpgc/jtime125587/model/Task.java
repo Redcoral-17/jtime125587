@@ -10,10 +10,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * Rappresenta un'attività (Task) persistente.
- * <p>
+ * Rappresenta un'attività (Task).
  * Questa entità è mappata su una tabella del database tramite JPA.
  * Utilizza Lombok per generare getter, setter e il costruttore senza argomenti.
+ *
+ * @author Filippo Corallini (125587), filippo.corallini@studenti.unicam.it
  */
 @Entity
 @Getter
@@ -22,58 +23,57 @@ import java.time.LocalTime;
 @Table
 public class Task {
     /**
-     * Identificatore univoco del task generato automaticamente.
+     * Identificatore univoco della task generato automaticamente.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * Nome descrittivo del task.
+     * Nome della task.
      */
     private String name;
     /**
-     * Data associata al task.
+     * Data associata alla task.
      */
     private LocalDate date;
     /**
-     * Orario di inizio del task.
+     * Orario di inizio della task.
      */
     private LocalTime startTime;
     /**
-     * Orario di fine del task.
+     * Orario di fine della task.
      */
     private LocalTime endTime;
     /**
-     * Durata precedente del task (può essere utilizzata per storicizzare modifiche).
+     * Durata precedente della task (viene utilizza per salvare la durata precedente).
      */
     private Duration oldDuration;
     /**
-     * Durata corrente calcolata tra startTime e endTime.
+     * Durata corrente calcolata tra startTime ed endTime.
      */
     private Duration duration;
     /**
-     * Stato del task, persistito come stringa.
+     * Stato della task.
      */
     @Enumerated(EnumType.STRING)
     private Status status;
     /**
-     * Progetto al quale la task appartiene (relazione many-to-one).
+     * Progetto al quale la task può appartenere.
      */
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
     /**
-     * Costruisce un nuovo Task con i parametri forniti.
-     *
+     * Costruisce una nuova Task con i parametri forniti.
      * La {@code duration} viene calcolata come la differenza tra {@code startTime} e {@code endTime}.
      * {@code oldDuration} viene inizializzata a {@link Duration#ZERO} e lo {@code status} è impostato su ACTIVE.
      *
-     * @param name nome del task
-     * @param date data del task
+     * @param name nome
+     * @param date data
      * @param startTime orario di inizio
      * @param endTime orario di fine
-     * @param project progetto associato al task
+     * @param project progetto associato alla task
      */
     public Task(String name, LocalDate date, LocalTime startTime, LocalTime endTime, Project project) {
         this.name = name;

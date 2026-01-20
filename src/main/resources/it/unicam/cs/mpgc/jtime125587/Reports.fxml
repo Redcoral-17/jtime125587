@@ -130,7 +130,7 @@
            <columns>
              <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
              <TableColumn fx:id="date" prefWidth="75.0" text="Date" />
-               <TableColumn fx:id="duration" prefWidth="75.0" text="Duration&#10;Difference" />
+               <TableColumn fx:id="difference" prefWidth="75.0" text="Duration&#10;Difference" />
                <TableColumn fx:id="status" prefWidth="75.0" text="Status" />
            </columns>
             <columnResizePolicy>

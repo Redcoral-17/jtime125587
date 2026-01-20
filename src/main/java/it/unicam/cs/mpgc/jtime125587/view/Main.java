@@ -61,6 +61,7 @@ public class Main {
      * @param task task opzionale da passare al controller del dialog.
      * @throws IOException se il file FXML non può essere caricato.
      */
+    @FXML
     public static void openDialog(String fxmlFile, String title, Task task) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -78,6 +79,7 @@ public class Main {
      *
      * @param errorMsg messaggio di errore da visualizzare.
      */
+    @FXML
     public static void showError(String errorMsg) {
         Alert alert = new Alert(Alert.AlertType.ERROR, errorMsg, ButtonType.OK);
         alert.setTitle("Error");

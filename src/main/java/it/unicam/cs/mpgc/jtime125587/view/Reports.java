@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Stream;
@@ -101,7 +102,7 @@ public class Reports {
         date.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
         difference.setCellValueFactory(cellData -> {
-            if(cellData.getValue().getOldDuration() != null) {
+            if(cellData.getValue().getOldDuration() != Duration.ZERO) {
                 return new SimpleObjectProperty<>(cellData.getValue().getDuration().minus(cellData.getValue().getOldDuration()).toMinutes() + " m");
             }
             return new SimpleObjectProperty<>("-Not available-");

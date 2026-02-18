@@ -36,7 +36,7 @@ public class HibernateUtil {
         try {
             return new Configuration().configure().buildSessionFactory();
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Error building SessionFactory: " + ex);
+            throw new ExceptionInInitializerError("Error building SessionFactory: " + ex);
         }
     }
 

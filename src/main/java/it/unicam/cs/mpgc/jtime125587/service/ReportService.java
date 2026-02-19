@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.jtime125587.service;
 
+import it.unicam.cs.mpgc.jtime125587.exception.ResourceNotFoundException;
 import it.unicam.cs.mpgc.jtime125587.model.Report;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
 import it.unicam.cs.mpgc.jtime125587.repository.ReportRepository;
@@ -39,11 +40,11 @@ public class ReportService {
      *
      * @param id l'ID del report
      * @return il report trovato
-     * @throws RuntimeException se il report non esiste
+     * @throws ResourceNotFoundException se il report non esiste
      */
     public Report getReportById(Long id) {
         return reportRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Report non trovato con ID: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Report non trovato con ID: " + id));
     }
 
     /**

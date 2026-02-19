@@ -1,4 +1,5 @@
 package it.unicam.cs.mpgc.jtime125587.service;
+import it.unicam.cs.mpgc.jtime125587.exception.ResourceNotFoundException;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
@@ -21,12 +22,12 @@ public class TaskService {
         return taskRepository.findAll();
     }
     public Task getTaskById(Long id) {
-        return taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task non trovata con ID: " + id));
+        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task non trovata con ID: " + id));
     }
     public Task createTask(String name, LocalDate date, LocalTime startTime, LocalTime endTime, Long projectId) {
         Project project = null;
         if (projectId != null) {
-            project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Progetto non trovato con ID: " + projectId));
+            project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Progetto non trovato con ID: " + projectId));
         }
         Task task = new Task(name, date, startTime, endTime, project);
         return taskRepository.save(task);
@@ -49,14 +50,14 @@ public class TaskService {
         taskRepository.delete(task);
     }
     public List<Task> getTasksByProject(Long projectId) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Progetto non trovato con ID: " + projectId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Progetto non trovato con ID: " + projectId));
         return taskRepository.findByProject(project);
     }
     public List<Task> getTasksByDateRange(LocalDate startDate, LocalDate endDate) {
         return taskRepository.findByDateBetween(startDate, endDate);
     }
     public List<Task> getTasksByProjectAndDateRange(Long projectId, LocalDate startDate, LocalDate endDate) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Progetto non trovato con ID: " + projectId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Progetto non trovato con ID: " + projectId));
         return taskRepository.findByProjectAndDateBetween(project, startDate, endDate);
     }
 }

@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.jtime125587.service;
 
+import it.unicam.cs.mpgc.jtime125587.exception.ResourceNotFoundException;
 import it.unicam.cs.mpgc.jtime125587.model.Project;
 import it.unicam.cs.mpgc.jtime125587.model.Status;
 import it.unicam.cs.mpgc.jtime125587.model.Task;
@@ -38,11 +39,11 @@ public class ProjectService {
      *
      * @param id l'ID del progetto
      * @return il progetto trovato
-     * @throws RuntimeException se il progetto non esiste
+     * @throws ResourceNotFoundException se il progetto non esiste
      */
     public Project getProjectById(Long id) {
         return projectRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Progetto non trovato con ID: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Progetto non trovato con ID: " + id));
     }
 
     /**

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.jtime125587.view.Main">
+    <center>
+        <AnchorPane minHeight="630.0" minWidth="500.0">
+            <TabPane fx:id="main" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+                <Tab text="Calendar">
+                    <fx:include fx:id="moveToC" source="Calendar.fxml" />
+                </Tab>
+                <Tab text="Projects">
+                    <fx:include fx:id="moveToP" source="Projects.fxml" />
+                </Tab>
+                <Tab text="Reports">
+                    <fx:include fx:id="moveToR" source="Reports.fxml" />
+                </Tab>
+            </TabPane>
+        </AnchorPane>
+    </center>
+    <top>
+        <Label minHeight="50.0" text="Java Time Schedule" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="HP Simplified" size="24.0" />
+            </font>
+        </Label>
+    </top>
+</BorderPane>
